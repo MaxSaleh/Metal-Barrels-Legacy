@@ -1,8 +1,8 @@
 package com.tfar.metalbarrels.render;
 
 import com.tfar.metalbarrels.MetalBarrels;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -13,6 +13,6 @@ public class Client {
   @SubscribeEvent
   public static void doClientStuff(final FMLClientSetupEvent event) {
     //ClientRegistry.bindTileEntityRenderer(MetalBarrels.ObjectHolders.CRYSTAL_TILE, CrystalBarrelTileSpecialRenderer::new);
-    RenderTypeLookup.setRenderLayer(MetalBarrels.ObjectHolders.CRYSTAL_BARREL, RenderType.getCutout());
+    ItemBlockRenderTypes.setRenderLayer(MetalBarrels.ObjectHolders.CRYSTAL_BARREL, RenderType.cutout());
   }
 }

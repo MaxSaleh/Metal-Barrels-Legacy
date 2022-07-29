@@ -1,28 +1,27 @@
 package com.tfar.metalbarrels.item;
 
-import net.minecraft.block.BarrelBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BarrelBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
@@ -46,16 +45,17 @@ public class BarrelUpgradeItem extends Item {
   public static final Method method;
 
   static {
-    method = ObfuscationReflectionHelper.findMethod(ChestTileEntity.class,"func_190576_q");//getItems
+    method = ObfuscationReflectionHelper.findMethod(ChestBlockEntity.class,"func_190576_q"); // getItems
   }
 
-  private static final ITextComponent s = new TranslationTextComponent("tooltip.metalbarrels.ironchest").mergeStyle(TextFormatting.GREEN);
+  private static final Component s = Component.translatable("tooltip.metalbarrels.ironchest")
+          .append(ChatFormatting.GREEN.toString());
 
   public static boolean IRON_CHESTS_LOADED;
 
   @Override
   @OnlyIn(Dist.CLIENT)
-  public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+  public void appendHoverText(ItemStack p_41421_, @org.jetbrains.annotations.Nullable Level p_41422_, List<Component> tooltip, TooltipFlag p_41424_) {
     if (IRON_CHESTS_LOADED) {
       tooltip.add(s);
     }
@@ -63,37 +63,37 @@ public class BarrelUpgradeItem extends Item {
 
   @Nonnull
   @Override
-  public ActionResultType onItemUse(ItemUseContext context) {
-    PlayerEntity player = context.getPlayer();
-    BlockPos pos = context.getPos();
-    World world = context.getWorld();
-    ItemStack heldStack = context.getItem();
+  public InteractionResult useOn(UseOnContext context) {
+    Player player = context.getPlayer();
+    BlockPos pos = context.getClickedPos();
+    Level world = context.getLevel();
+    ItemStack heldStack = context.getItemInHand();
     BlockState state = world.getBlockState(pos);
 
     if (player == null || !upgradeInfo.canUpgrade(world.getBlockState(pos).getBlock())) {
-      return ActionResultType.FAIL;
+      return InteractionResult.FAIL;
     }
-    if (world.isRemote || player.getPose() != Pose.CROUCHING)
-      return ActionResultType.PASS;
+    if (world.isClientSide || player.getPose() != Pose.CROUCHING)
+      return InteractionResult.PASS;
 
     if (state.getBlock() instanceof BarrelBlock)
-    if (state.get(BlockStateProperties.OPEN)) {
-      player.sendStatusMessage(new TranslationTextComponent("metalbarrels.in_use")
-              .mergeStyle(Style.EMPTY.applyFormatting(TextFormatting.RED)), true);
-      return ActionResultType.PASS;
-    }
+      if (state.getValue(BlockStateProperties.OPEN)) {
+        player.sendSystemMessage(Component.translatable("metalbarrels.in_use")
+                .append((Component) Style.EMPTY.applyFormat(ChatFormatting.RED)));
+        return InteractionResult.PASS;
+      }
 
-    TileEntity oldBarrel = world.getTileEntity(pos);
+    BlockEntity oldBarrel = world.getBlockEntity(pos);
     final List<ItemStack> oldBarrelContents = new ArrayList<>();
 
     Direction facing = Direction.NORTH;
     if (state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)){
-      facing = state.get(BlockStateProperties.HORIZONTAL_FACING);
+      facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
     } else if (state.hasProperty(BlockStateProperties.FACING)) {
-      facing = state.get(BlockStateProperties.FACING);
+      facing = state.getValue(BlockStateProperties.FACING);
     }
 
-    if (oldBarrel instanceof ChestTileEntity) {
+    if (oldBarrel instanceof ChestBlockEntity) {
       try {
         oldBarrelContents.addAll((Collection<? extends ItemStack>) method.invoke(oldBarrel));
       } catch (IllegalAccessException | InvocationTargetException e) {
@@ -102,28 +102,30 @@ public class BarrelUpgradeItem extends Item {
     } else oldBarrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             .ifPresent((itemHandler) -> IntStream.range(0, itemHandler.getSlots())
                     .mapToObj(itemHandler::getStackInSlot).forEach(oldBarrelContents::add));
-    oldBarrel.remove();
+    oldBarrel.setRemoved();
 
     Block newBlock = upgradeInfo.getBlock(state.getBlock());
 
-    BlockState newState = newBlock.getDefaultState();
+    BlockState newState = newBlock.defaultBlockState();
 
     if (newState.hasProperty(BlockStateProperties.HORIZONTAL_FACING)){
-      newState = newState.with(BlockStateProperties.HORIZONTAL_FACING,facing);
+      newState = newState.setValue(BlockStateProperties.HORIZONTAL_FACING,facing);
     } else if (newState.hasProperty(BlockStateProperties.FACING)){
-      newState = newState.with(BlockStateProperties.FACING,facing);
+      newState = newState.setValue(BlockStateProperties.FACING,facing);
     }
 
-    world.setBlockState(pos, newState, 3);
-    TileEntity newBarrel = world.getTileEntity(pos);
+    world.setBlock(pos, newState, 3);
+    BlockEntity newBarrel = world.getBlockEntity(pos);
 
-    newBarrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent((itemHandler) -> IntStream.range(0, oldBarrelContents.size()).forEach(i -> itemHandler.insertItem(i, oldBarrelContents.get(i), false)));
+    newBarrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent((itemHandler) ->
+            IntStream.range(0, oldBarrelContents.size()).forEach(i -> itemHandler.insertItem(i, oldBarrelContents.get(i), false)));
 
-    if (!player.abilities.isCreativeMode)
+    if (!player.getAbilities().instabuild)
       heldStack.shrink(1);
 
-    player.sendStatusMessage(new TranslationTextComponent("metalbarrels.upgrade_successful")
-            .mergeStyle(Style.EMPTY.applyFormatting(TextFormatting.GREEN)), true);
-    return ActionResultType.SUCCESS;
+    player.sendSystemMessage(Component.translatable("metalbarrels.upgrade_successful")
+            .append((Component) Style.EMPTY.applyFormat(ChatFormatting.GREEN)));
+
+    return InteractionResult.SUCCESS;
   }
 }

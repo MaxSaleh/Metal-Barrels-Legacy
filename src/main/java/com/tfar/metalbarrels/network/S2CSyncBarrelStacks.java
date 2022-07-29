@@ -4,15 +4,15 @@ borrowed from iron chests
 package com.tfar.metalbarrels.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
@@ -29,7 +29,7 @@ public class S2CSyncBarrelStacks {
     this.topStacks = topStacks;
   }
 
-  public static void encode(S2CSyncBarrelStacks msg, PacketBuffer buf) {
+  public static void encode(S2CSyncBarrelStacks msg, FriendlyByteBuf buf) {
     buf.writeInt(msg.dimension);
     buf.writeInt(msg.pos.getX());
     buf.writeInt(msg.pos.getY());
@@ -37,11 +37,11 @@ public class S2CSyncBarrelStacks {
     buf.writeInt(msg.topStacks.size());
 
     for (ItemStack stack : msg.topStacks) {
-      buf.writeItemStack(stack);
+      buf.writeItemStack(stack, false);
     }
   }
 
-  public static S2CSyncBarrelStacks decode(PacketBuffer buf) {
+  public static S2CSyncBarrelStacks decode(FriendlyByteBuf buf) {
     int dimension = buf.readInt();
     BlockPos pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
 
@@ -49,7 +49,7 @@ public class S2CSyncBarrelStacks {
     NonNullList<ItemStack> topStacks = NonNullList.withSize(size, ItemStack.EMPTY);
 
     for (int item = 0; item < size; item++) {
-      ItemStack itemStack = buf.readItemStack();
+      ItemStack itemStack = buf.readItem();
 
       topStacks.set(item, itemStack);
     }
@@ -61,10 +61,10 @@ public class S2CSyncBarrelStacks {
     public static void handle(final S2CSyncBarrelStacks message, Supplier<NetworkEvent.Context> ctx) {
       ctx.get().enqueueWork(() -> {
 
-      World world = DistExecutor.callWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().world);
+      Level world = DistExecutor.callWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().level);
 
         if (world != null) {
-          TileEntity tile = world.getTileEntity(message.pos);
+          BlockEntity tile = world.getBlockEntity(message.pos);
 
           /*if (tile instanceof CrystalBarrelTile) {
             ((CrystalBarrelTile) tile).receiveMessageFromServer(message.topStacks);

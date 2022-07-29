@@ -2,22 +2,14 @@ package com.tfar.metalbarrels.container;
 
 import com.tfar.metalbarrels.MetalBarrels;
 import com.tfar.metalbarrels.tile.MetalBarrelBlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
-public class MetalBarrelContainer extends Container {
+public class MetalBarrelContainer extends AbstractContainerMenu {
 
   protected PlayerEntity playerEntity;
 	private final IWorldPosCallable callable;

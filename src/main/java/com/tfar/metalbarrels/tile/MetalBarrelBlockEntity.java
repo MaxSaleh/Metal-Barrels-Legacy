@@ -2,38 +2,45 @@ package com.tfar.metalbarrels.tile;
 
 import com.tfar.metalbarrels.util.MetalBarrelBlockEntityType;
 import com.tfar.metalbarrels.block.MetalBarrelBlock;
-import net.minecraft.block.BarrelBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.data.BlockStateVariantBuilder.ITriFunction;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.*;
-import net.minecraft.util.math.vector.Vector3i;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
+import net.minecraft.data.models.blockstates.PropertyDispatch;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.Nameable;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.BarrelBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class MetalBarrelBlockEntity extends TileEntity implements INamedContainerProvider, INameable {
+public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider, Nameable {
 
   protected final int width;
   protected final int height;
-  protected final ITriFunction<Integer, PlayerInventory, IWorldPosCallable,Container> containerFactory;
-  protected ITextComponent customName;
+  protected final PropertyDispatch.TriFunction<Integer, Inventory, ContainerLevelAccess, AbstractContainerMenu> containerFactory;
+  protected Component customName;
 
-  public MetalBarrelBlockEntity(TileEntityType<?> tileEntityType) {
-    super(tileEntityType);
+  public MetalBarrelBlockEntity(BlockEntityType<?> tileEntityType, BlockPos blockPos, BlockState blockState) {
+    super(tileEntityType, blockPos, blockState);
     this.width = ((MetalBarrelBlockEntityType)tileEntityType).width;
     this.height = ((MetalBarrelBlockEntityType)tileEntityType).height;
     this.containerFactory = ((MetalBarrelBlockEntityType)tileEntityType).containerFactory;
@@ -41,7 +48,7 @@ public class MetalBarrelBlockEntity extends TileEntity implements INamedContaine
       @Override
       protected void onContentsChanged(int slot) {
         super.onContentsChanged(slot);
-        markDirty();
+        setChanged();
       }
     };
     optional = LazyOptional.of(() -> handler);
@@ -52,81 +59,84 @@ public class MetalBarrelBlockEntity extends TileEntity implements INamedContaine
 
   public int players = 0;
 
-  @Nonnull
   @Override
-  public CompoundNBT write(CompoundNBT tag) {
-    CompoundNBT compound = this.handler.serializeNBT();
+  protected void saveAdditional(CompoundTag tag) {
+    CompoundTag compound = this.handler.serializeNBT();
     tag.put("inv", compound);
     if (this.customName != null) {
-      tag.putString("CustomName", ITextComponent.Serializer.toJson(this.customName));
+      tag.putString("CustomName", Component.Serializer.toJson(this.customName));
     }
-    return super.write(tag);
+    super.saveAdditional(tag);
   }
 
-  public void changeState(BlockState p_213963_1_, boolean p_213963_2_) {
-    if (p_213963_1_.getBlock() instanceof MetalBarrelBlock)
-    this.world.setBlockState(this.getPos(), p_213963_1_.with(BarrelBlock.PROPERTY_OPEN, p_213963_2_), 3);
+  public void changeState(BlockState blockState, boolean p_213963_2_) {
+    if (blockState.getBlock() instanceof MetalBarrelBlock) {
+      assert this.level != null;
+      this.level.setBlock(this.getBlockPos(), blockState.setValue(BarrelBlock.OPEN, p_213963_2_), 3);
+    }
     //else MetalBarrels.logger.warn("Attempted to set invalid property of {}",p_213963_1_.toString());
   }
 
-  public void soundStuff(BlockState p_213965_1_, SoundEvent p_213965_2_) {
-    if (!(p_213965_1_.getBlock() instanceof MetalBarrelBlock)){
+  public void soundStuff(BlockState blockState, SoundEvent p_213965_2_) {
+    if (!(blockState.getBlock() instanceof MetalBarrelBlock)){
       //MetalBarrels.logger.warn("Attempted to set invalid property of {}",p_213965_1_.toString());
       return;
     }
-    Vector3i lvt_3_1_ = p_213965_1_.get(BarrelBlock.PROPERTY_FACING).getDirectionVec();
-    double lvt_4_1_ = this.pos.getX() + 0.5D + lvt_3_1_.getX() / 2.0D;
-    double lvt_6_1_ = this.pos.getY() + 0.5D + lvt_3_1_.getY() / 2.0D;
-    double lvt_8_1_ = this.pos.getZ() + 0.5D + lvt_3_1_.getZ() / 2.0D;
-    this.world.playSound(null, lvt_4_1_, lvt_6_1_, lvt_8_1_, p_213965_2_, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+
+    Vec3i lvt_3_1_ = p_213965_1_.get(BarrelBlock.FACING).getDirectionVec();
+    double lvt_4_1_ = this.getBlockPos().getX() + 0.5D + lvt_3_1_.getX() / 2.0D;
+    double lvt_6_1_ = this.getBlockPos().getY() + 0.5D + lvt_3_1_.getY() / 2.0D;
+    double lvt_8_1_ = this.getBlockPos().getZ() + 0.5D + lvt_3_1_.getZ() / 2.0D;
+    this.level.playSound(null, lvt_4_1_, lvt_6_1_, lvt_8_1_, p_213965_2_,
+            SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
   }
 
-  @Override//read
-  public void read(BlockState state,CompoundNBT tag) {
-    CompoundNBT invTag = tag.getCompound("inv");
+  @Override
+  public void load(CompoundTag tag) {
+    CompoundTag invTag = tag.getCompound("inv");
     handler.deserializeNBT(invTag);
     if (tag.contains("CustomName", 8)) {
-      this.customName = ITextComponent.Serializer.func_240643_a_(tag.getString("CustomName"));
+      this.customName = Component.Serializer.fromJson(tag.getString("CustomName"));
     }
-    super.read(state,tag);
+    super.load(tag);
   }
 
-  @Nonnull
   @Override
-  public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+  public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
     return cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? optional.cast() : super.getCapability(cap, side);
   }
 
   @Override
-  public void remove() {
-    super.remove();
+  public void setRemoved() {
+    super.setRemoved();
     optional.invalidate();
   }
 
-  public void setCustomName(ITextComponent name) {
+  public void setCustomName(Component name) {
     this.customName = name;
   }
 
-  public ITextComponent getName() {
+  public Component getName() {
     return this.customName != null ? this.customName : this.getDefaultName();
   }
 
-  public ITextComponent getDisplayName() {
+  public Component getDisplayName() {
     return this.getName();
   }
 
   @Nullable
-  public ITextComponent getCustomName() {
+  public Component getCustomName() {
     return this.customName;
   }
 
-  protected ITextComponent getDefaultName() {
-    return new TranslationTextComponent(getBlockState().getBlock().getTranslationKey());
+  protected Component getDefaultName() {
+    return Component.translatable(getBlockState().getBlock().getDescriptionId());
   }
 
   @Nullable
   @Override
-  public Container createMenu(int id, PlayerInventory inv, PlayerEntity player) {
-    return containerFactory.apply(id, inv,IWorldPosCallable.of(world,pos));
+  public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
+    assert this.level != null;
+    return containerFactory.apply(id, inv, ContainerLevelAccess.create(this.level, this.getBlockPos()));
   }
 }

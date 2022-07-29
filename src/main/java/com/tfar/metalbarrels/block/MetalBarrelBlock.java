@@ -1,22 +1,12 @@
 package com.tfar.metalbarrels.block;
 
 import com.tfar.metalbarrels.tile.MetalBarrelBlockEntity;
-import net.minecraft.block.BarrelBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BarrelBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
@@ -24,20 +14,32 @@ import javax.annotation.Nullable;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import static net.minecraft.inventory.InventoryHelper.spawnItemStack;
+import static net.minecraft.world.Containers.dropItemStack;
 
 @SuppressWarnings("deprecation")
 public class MetalBarrelBlock extends BarrelBlock {
 
-  protected final Supplier<TileEntity> tileEntitySupplier;
+  protected final Supplier<BlockEntity> tileEntitySupplier;
 
-  public MetalBarrelBlock(Properties properties, Supplier<TileEntity> tileEntitySupplier) {
+  public MetalBarrelBlock(Properties properties, Supplier<BlockEntity> tileEntitySupplier) {
     super(properties);
     this.tileEntitySupplier = tileEntitySupplier;
   }
 
   @Override
-  public void onReplaced(BlockState state, @Nonnull World worldIn,@Nonnull BlockPos pos,@Nonnull BlockState newState, boolean isMoving) {
+  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+    if (state.getBlock() != newState.getBlock()) {
+      BlockEntity tileEntity = level.getBlockEntity(pos);
+      if (tileEntity instanceof MetalBarrelBlockEntity) {
+        dropItems((MetalBarrelBlockEntity) tileEntity, level, pos);
+        level.updateNeighbourForOutputSignal(pos, this);
+      }
+      super.onRemove(state, level, pos, newState, isMoving);
+    }
+  }
+
+  @Override
+  public void onReplaced(BlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull BlockState newState, boolean isMoving) {
     if (state.getBlock() != newState.getBlock()) {
       TileEntity tileentity = worldIn.getTileEntity(pos);
       if (tileentity instanceof MetalBarrelBlockEntity) {
@@ -48,9 +50,9 @@ public class MetalBarrelBlock extends BarrelBlock {
     }
   }
 
-  public static void dropItems(MetalBarrelBlockEntity barrel, World world, BlockPos pos) {
+  public static void dropItems(MetalBarrelBlockEntity barrel, Level level, BlockPos pos) {
     IntStream.range(0, barrel.handler.getSlots()).mapToObj(barrel.handler::getStackInSlot)
-            .filter(stack -> !stack.isEmpty()).forEach(stack -> spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack));
+            .filter(stack -> !stack.isEmpty()).forEach(stack -> dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack));
   }
 
   @Override
