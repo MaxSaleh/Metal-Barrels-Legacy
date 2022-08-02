@@ -38,7 +38,7 @@ public class MetalBarrels {
   }
 
   private void doClientStuff(final FMLClientSetupEvent event) {
-    MenuScreens.register(ModMenuTypes.COPPER_CONTAINER.get(), ContainerScreen::new);
+    MenuScreens.register(ModMenuTypes.COPPER_CONTAINER.get(), MetalBarrelScreen::copper);
   }
 
 }

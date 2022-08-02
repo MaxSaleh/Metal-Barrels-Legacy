@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContainer> {
 
-  private final ResourceLocation texture = new ResourceLocation(MetalBarrels.MODID,"textures/gui/container/copper.png");
+  private final ResourceLocation texture;
 
   private final boolean isTall;
 
@@ -27,10 +27,10 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
     super(barrelContainer, playerInventory, component);
     this.imageWidth = xSize;
     this.imageHeight = ySize;
-    //this.texture = texture;
+    this.texture = texture;
     this.inventoryLabelY = this.imageHeight - 94;
-    isTall = 3> 6;//barrelContainer.height > 6; // TODO
-    isWide = 3> 12;//barrelContainer.width > 12; // TODO
+    isTall = barrelContainer.height > 6;
+    isWide = barrelContainer.width > 12;
   }
 
   @Override

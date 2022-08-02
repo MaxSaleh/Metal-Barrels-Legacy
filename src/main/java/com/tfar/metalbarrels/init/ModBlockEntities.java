@@ -17,7 +17,7 @@ public class ModBlockEntities {
 
     public static final RegistryObject<BlockEntityType<MetalBarrelBlockEntity>> COPPER_BARREL = REGISTER.register(
             "copper_barrel", () -> BlockEntityType.Builder.of(
-                            MetalBarrelBlockEntity::new, ModBlocks.COPPER_BARREL.get())
+                            MetalBarrelBlockEntity::copper, ModBlocks.COPPER_BARREL.get())
                     .build(null)
     );
 }

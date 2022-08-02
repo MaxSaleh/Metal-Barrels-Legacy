@@ -2,6 +2,7 @@ package com.tfar.metalbarrels.init;
 
 import com.tfar.metalbarrels.MetalBarrels;
 import com.tfar.metalbarrels.block.MetalBarrelBlock;
+import com.tfar.metalbarrels.tile.MetalBarrelBlockEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;

@@ -4,6 +4,7 @@ import com.tfar.metalbarrels.tile.MetalBarrelBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
@@ -23,77 +24,61 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
+import java.util.stream.IntStream;
+
+import static net.minecraft.world.Containers.dropItemStack;
 
 @SuppressWarnings("deprecation")
 public class MetalBarrelBlock extends BarrelBlock {
-  public static final DirectionProperty FACING = BlockStateProperties.FACING;
-  public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
-
-  public MetalBarrelBlock(BlockBehaviour.Properties p_49046_) {
-    super(p_49046_);
-    this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, Boolean.valueOf(false)));
+  public MetalBarrelBlock(Properties properties) {
+    super(properties);
   }
 
   @Override
-  public InteractionResult use(BlockState p_49069_, Level p_49070_, BlockPos p_49071_, Player p_49072_, InteractionHand p_49073_, BlockHitResult p_49074_) {
-    if (p_49070_.isClientSide) {
-      return InteractionResult.SUCCESS;
-    } else {
-      BlockEntity blockentity = p_49070_.getBlockEntity(p_49071_);
-      if (blockentity instanceof MetalBarrelBlockEntity) {
-        p_49072_.openMenu((MetalBarrelBlockEntity)blockentity);
-        p_49072_.awardStat(Stats.OPEN_BARREL);
-        PiglinAi.angerNearbyPiglins(p_49072_, true);
+  public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    if (state.getBlock() != newState.getBlock()) {
+      BlockEntity tileentity = worldIn.getBlockEntity(pos);
+      if (tileentity instanceof MetalBarrelBlockEntity) {
+        dropItems((MetalBarrelBlockEntity)tileentity,worldIn, pos);
+        worldIn.updateNeighbourForOutputSignal(pos, this);
       }
-
-      return InteractionResult.CONSUME;
+      super.onRemove(state, worldIn, pos, newState, isMoving);
     }
   }
 
+  public static void dropItems(MetalBarrelBlockEntity barrel, Level world, BlockPos pos) {
+    IntStream.range(0, barrel.handler.getSlots()).mapToObj(barrel.handler::getStackInSlot)
+            .filter(stack -> !stack.isEmpty()).forEach(stack -> dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack));
+  }
+
   @Override
-  public void onRemove(BlockState p_49076_, Level p_49077_, BlockPos p_49078_, BlockState p_49079_, boolean p_49080_) {
-    if (!p_49076_.is(p_49079_.getBlock())) {
-      BlockEntity blockentity = p_49077_.getBlockEntity(p_49078_);
-      if (blockentity instanceof Container) {
-        Containers.dropContents(p_49077_, p_49078_, (Container)blockentity);
-        p_49077_.updateNeighbourForOutputSignal(p_49078_, this);
+  public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+    if (!world.isClientSide) {
+      MenuProvider tileEntity = getMenuProvider(state, world, pos);
+      if (tileEntity != null) {
+        MetalBarrelBlockEntity metalBarrelBlockEntity = (MetalBarrelBlockEntity)tileEntity;
+        world.setBlock(pos, state.setValue(BarrelBlock.OPEN, true), 3);
+        if (metalBarrelBlockEntity.players == 0) {
+          metalBarrelBlockEntity.soundStuff(state, SoundEvents.BARREL_OPEN);
+          metalBarrelBlockEntity.changeState(state, true);
+        }
+        metalBarrelBlockEntity.players++;
+        player.openMenu(tileEntity);
+        player.awardStat(Stats.OPEN_BARREL);
       }
-
-      super.onRemove(p_49076_, p_49077_, p_49078_, p_49079_, p_49080_);
     }
-  }
-
-  @Override
-  public void tick(BlockState p_220758_, ServerLevel p_220759_, BlockPos p_220760_, RandomSource p_220761_) {
-    BlockEntity blockentity = p_220759_.getBlockEntity(p_220760_);
-    if (blockentity instanceof MetalBarrelBlockEntity) {
-      ((MetalBarrelBlockEntity)blockentity).recheckOpen();
-    }
-
+    return InteractionResult.SUCCESS;
   }
 
   @Nullable
   @Override
-  public BlockEntity newBlockEntity(BlockPos p_152102_, BlockState p_152103_) {
-    return new MetalBarrelBlockEntity(p_152102_, p_152103_);
-  }
-
-  @Override
-  public RenderShape getRenderShape(BlockState p_49090_) {
-    return RenderShape.MODEL;
-  }
-
-  @Override
-  public void setPlacedBy(Level p_49052_, BlockPos p_49053_, BlockState p_49054_, @Nullable LivingEntity p_49055_, ItemStack p_49056_) {
-    if (p_49056_.hasCustomHoverName()) {
-      BlockEntity blockentity = p_49052_.getBlockEntity(p_49053_);
-      if (blockentity instanceof MetalBarrelBlockEntity) {
-        ((MetalBarrelBlockEntity)blockentity).setCustomName(p_49056_.getHoverName());
-      }
-    }
-
+  public BlockEntity newBlockEntity(BlockPos state, BlockState blockState) {
+    return MetalBarrelBlockEntity.copper(state, blockState);
   }
 
   @Override
@@ -102,27 +87,25 @@ public class MetalBarrelBlock extends BarrelBlock {
   }
 
   @Override
-  public int getAnalogOutputSignal(BlockState p_49065_, Level p_49066_, BlockPos p_49067_) {
-    return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(p_49066_.getBlockEntity(p_49067_));
+  public int getAnalogOutputSignal(BlockState blockState, Level world, BlockPos pos) {
+    BlockEntity barrel = world.getBlockEntity(pos);
+    return barrel instanceof MetalBarrelBlockEntity ? ItemHandlerHelper.calcRedstoneFromInventory(((MetalBarrelBlockEntity) barrel).handler) : 0;
   }
 
   @Override
-  public BlockState rotate(BlockState p_49085_, Rotation p_49086_) {
-    return p_49085_.setValue(FACING, p_49086_.rotate(p_49085_.getValue(FACING)));
+  public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+    if (stack.hasCustomHoverName()) {
+      BlockEntity tileentity = worldIn.getBlockEntity(pos);
+      if (tileentity instanceof MetalBarrelBlockEntity) {
+        ((MetalBarrelBlockEntity)tileentity).setCustomName(stack.getDisplayName());
+      }
+    }
   }
 
+  /**
+  @Nullable
   @Override
-  public BlockState mirror(BlockState p_49082_, Mirror p_49083_) {
-    return p_49082_.rotate(p_49083_.getRotation(p_49082_.getValue(FACING)));
-  }
-
-  @Override
-  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_49088_) {
-    p_49088_.add(FACING, OPEN);
-  }
-
-  @Override
-  public BlockState getStateForPlacement(BlockPlaceContext p_49048_) {
-    return this.defaultBlockState().setValue(FACING, p_49048_.getNearestLookingDirection().getOpposite());
-  }
+  public ToolType getHarvestTool(BlockState state) {
+    return ToolType.PICKAXE;
+  }**/
 }
