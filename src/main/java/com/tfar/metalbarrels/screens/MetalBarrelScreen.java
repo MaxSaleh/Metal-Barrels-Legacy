@@ -1,16 +1,22 @@
 package com.tfar.metalbarrels.screens;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.tfar.metalbarrels.MetalBarrels;
 import com.tfar.metalbarrels.container.MetalBarrelContainer;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import org.jetbrains.annotations.NotNull;
 
 public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContainer> {
 
-  private final ResourceLocation texture;
+  private final ResourceLocation texture = new ResourceLocation(MetalBarrels.MODID,"textures/gui/container/copper.png");
 
   private final boolean isTall;
 
@@ -21,22 +27,28 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
     super(barrelContainer, playerInventory, component);
     this.imageWidth = xSize;
     this.imageHeight = ySize;
-    this.texture = texture;
+    //this.texture = texture;
     this.inventoryLabelY = this.imageHeight - 94;
-    isTall = barrelContainer.height > 6;
-    isWide = barrelContainer.width > 12;
+    isTall = 3> 6;//barrelContainer.height > 6; // TODO
+    isWide = 3> 12;//barrelContainer.width > 12; // TODO
   }
 
   @Override
-  public void render(PoseStack poseStack, int x, int y, float p_97798_) {
+  public void render(@NotNull PoseStack poseStack, int x, int y, float partialTicks) {
     this.renderBackground(poseStack);
-    super.render(poseStack, x, y, p_97798_);
-    this.renderLabels(poseStack, x, y); // func_230459_a_ (1.16.5)
+    super.render(poseStack, x, y, partialTicks);
+    //this.renderBg(poseStack, partialTicks, x, y);
+    this.renderTooltip(poseStack, x, y);
   }
 
   @Override
-  protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-    this.minecraft.getTextureManager().bindForSetup(texture);
+  protected void renderBg(@NotNull PoseStack stack, float partialTicks, int mouseX, int mouseY) {
+    RenderSystem.setShader(GameRenderer::getPositionTexShader);
+    RenderSystem.setShaderTexture(0, texture);
+    RenderSystem.enableBlend();
+    RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
     int i = (this.width - this.imageWidth) / 2;
     int j = (this.height - this.imageHeight) / 2;
     if (!isTall) {
@@ -56,7 +68,7 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
   private static final ResourceLocation NETHERITE = new ResourceLocation(MetalBarrels.MODID,"textures/gui/container/netherite.png");
 
 
-  public static MetalBarrelScreen copper(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
+  public static @NotNull MetalBarrelScreen copper(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
     return new MetalBarrelScreen(barrelContainer,playerInventory,component,COPPER,176,204);
   }
 

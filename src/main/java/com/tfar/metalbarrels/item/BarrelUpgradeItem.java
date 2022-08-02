@@ -45,7 +45,7 @@ public class BarrelUpgradeItem extends Item {
   public static final Method method;
 
   static {
-    method = ObfuscationReflectionHelper.findMethod(ChestBlockEntity.class,"func_190576_q"); // getItems
+    method = ObfuscationReflectionHelper.findMethod(ChestBlockEntity.class,"getItems"); // getItems
   }
 
   private static final Component s = Component.translatable("tooltip.metalbarrels.ironchest")

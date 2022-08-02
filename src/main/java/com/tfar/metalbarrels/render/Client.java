@@ -13,6 +13,7 @@ public class Client {
   @SubscribeEvent
   public static void doClientStuff(final FMLClientSetupEvent event) {
     //ClientRegistry.bindTileEntityRenderer(MetalBarrels.ObjectHolders.CRYSTAL_TILE, CrystalBarrelTileSpecialRenderer::new);
-    ItemBlockRenderTypes.setRenderLayer(MetalBarrels.ObjectHolders.CRYSTAL_BARREL, RenderType.cutout());
+
+    //ItemBlockRenderTypes.setRenderLayer(MetalBarrels.ObjectHolders.CRYSTAL_BARREL, RenderType.cutout());
   }
 }
