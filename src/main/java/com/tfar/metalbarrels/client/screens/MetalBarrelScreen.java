@@ -1,16 +1,14 @@
-package com.tfar.metalbarrels.screens;
+package com.tfar.metalbarrels.client.screens;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.tfar.metalbarrels.MetalBarrels;
-import com.tfar.metalbarrels.container.MetalBarrelContainer;
-import net.minecraft.client.gui.screens.TitleScreen;
+import com.tfar.metalbarrels.common.container.MetalBarrelContainer;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 

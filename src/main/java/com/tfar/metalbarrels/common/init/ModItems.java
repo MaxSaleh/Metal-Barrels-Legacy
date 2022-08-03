@@ -1,4 +1,4 @@
-package com.tfar.metalbarrels.init;
+package com.tfar.metalbarrels.common.init;
 
 import com.tfar.metalbarrels.MetalBarrels;
 import net.minecraft.world.item.BlockItem;

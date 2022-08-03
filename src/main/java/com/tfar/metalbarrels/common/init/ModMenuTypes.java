@@ -1,7 +1,7 @@
-package com.tfar.metalbarrels.init;
+package com.tfar.metalbarrels.common.init;
 
 import com.tfar.metalbarrels.MetalBarrels;
-import com.tfar.metalbarrels.container.MetalBarrelContainer;
+import com.tfar.metalbarrels.common.container.MetalBarrelContainer;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

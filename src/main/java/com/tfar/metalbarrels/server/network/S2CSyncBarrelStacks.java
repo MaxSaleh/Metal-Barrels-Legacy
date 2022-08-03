@@ -1,7 +1,7 @@
 /************************
 borrowed from iron chests
  ********************* */
-package com.tfar.metalbarrels.network;
+package com.tfar.metalbarrels.server.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

@@ -1,7 +1,7 @@
 /************************
  borrowed from iron chests
  ********************* */
-package com.tfar.metalbarrels.network;
+package com.tfar.metalbarrels.server.network;
 
 import com.tfar.metalbarrels.MetalBarrels;
 import net.minecraft.resources.ResourceLocation;

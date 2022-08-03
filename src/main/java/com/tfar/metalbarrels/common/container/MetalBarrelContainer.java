@@ -1,11 +1,9 @@
-package com.tfar.metalbarrels.container;
+package com.tfar.metalbarrels.common.container;
 
 import com.tfar.metalbarrels.MetalBarrels;
-import com.tfar.metalbarrels.init.ModMenuTypes;
-import com.tfar.metalbarrels.tile.MetalBarrelBlockEntity;
+import com.tfar.metalbarrels.common.init.ModMenuTypes;
+import com.tfar.metalbarrels.common.tile.MetalBarrelBlockEntity;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;

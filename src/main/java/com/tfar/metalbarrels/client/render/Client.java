@@ -1,4 +1,4 @@
-package com.tfar.metalbarrels.render;
+package com.tfar.metalbarrels.client.render;
 
 import com.tfar.metalbarrels.MetalBarrels;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;

@@ -1,4 +1,4 @@
-package com.tfar.metalbarrels.init;
+package com.tfar.metalbarrels.common.init;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 

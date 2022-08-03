@@ -1,13 +1,11 @@
 package com.tfar.metalbarrels;
 
-import com.mojang.blaze3d.platform.ScreenManager;
-import com.tfar.metalbarrels.init.ModMenuTypes;
-import com.tfar.metalbarrels.init.ModRegistries;
-import com.tfar.metalbarrels.item.BarrelUpgradeItem;
-import com.tfar.metalbarrels.network.PacketHandler;
-import com.tfar.metalbarrels.screens.MetalBarrelScreen;
+import com.tfar.metalbarrels.common.init.ModMenuTypes;
+import com.tfar.metalbarrels.common.init.ModRegistries;
+import com.tfar.metalbarrels.common.item.BarrelUpgradeItem;
+import com.tfar.metalbarrels.server.network.PacketHandler;
+import com.tfar.metalbarrels.client.screens.MetalBarrelScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;

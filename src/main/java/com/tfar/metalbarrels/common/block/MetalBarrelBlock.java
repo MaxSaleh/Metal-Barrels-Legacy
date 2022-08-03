@@ -1,46 +1,44 @@
-package com.tfar.metalbarrels.block;
+package com.tfar.metalbarrels.common.block;
 
-import com.tfar.metalbarrels.tile.MetalBarrelBlockEntity;
+import com.tfar.metalbarrels.common.tile.MetalBarrelBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.piglin.PiglinAi;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import static net.minecraft.world.Containers.dropItemStack;
 
-@SuppressWarnings("deprecation")
 public class MetalBarrelBlock extends BarrelBlock {
-  public MetalBarrelBlock(Properties properties) {
+
+  protected final String barrelName;
+
+  public MetalBarrelBlock(Properties properties, String barrelName) {
     super(properties);
+    this.barrelName = barrelName;
   }
 
   @Override
-  public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+  public void onRemove(BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos,
+                       BlockState newState, boolean isMoving) {
     if (state.getBlock() != newState.getBlock()) {
       BlockEntity tileentity = worldIn.getBlockEntity(pos);
       if (tileentity instanceof MetalBarrelBlockEntity) {
@@ -53,11 +51,13 @@ public class MetalBarrelBlock extends BarrelBlock {
 
   public static void dropItems(MetalBarrelBlockEntity barrel, Level world, BlockPos pos) {
     IntStream.range(0, barrel.handler.getSlots()).mapToObj(barrel.handler::getStackInSlot)
-            .filter(stack -> !stack.isEmpty()).forEach(stack -> dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack));
+            .filter(stack -> !stack.isEmpty()).forEach(stack ->
+                    dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack));
   }
 
   @Override
-  public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+  public @NotNull InteractionResult use(@NotNull BlockState state, Level world, @NotNull BlockPos pos,
+                                        @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult result) {
     if (!world.isClientSide) {
       MenuProvider tileEntity = getMenuProvider(state, world, pos);
       if (tileEntity != null) {
@@ -77,23 +77,29 @@ public class MetalBarrelBlock extends BarrelBlock {
 
   @Nullable
   @Override
-  public BlockEntity newBlockEntity(BlockPos state, BlockState blockState) {
-    return MetalBarrelBlockEntity.copper(state, blockState);
+  public BlockEntity newBlockEntity(@NotNull BlockPos state, @NotNull BlockState blockState) {
+    if (barrelName.equals("copper")) {
+      return MetalBarrelBlockEntity.copper(state, blockState);
+    } else {
+      return null;
+    }
   }
 
   @Override
-  public boolean hasAnalogOutputSignal(BlockState p_49058_) {
+  public boolean hasAnalogOutputSignal(@NotNull BlockState blockState) {
     return true;
   }
 
   @Override
-  public int getAnalogOutputSignal(BlockState blockState, Level world, BlockPos pos) {
+  public int getAnalogOutputSignal(@NotNull BlockState blockState, Level world, @NotNull BlockPos pos) {
     BlockEntity barrel = world.getBlockEntity(pos);
-    return barrel instanceof MetalBarrelBlockEntity ? ItemHandlerHelper.calcRedstoneFromInventory(((MetalBarrelBlockEntity) barrel).handler) : 0;
+    return barrel instanceof MetalBarrelBlockEntity ?
+            ItemHandlerHelper.calcRedstoneFromInventory(((MetalBarrelBlockEntity) barrel).handler) : 0;
   }
 
   @Override
-  public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+  public void setPlacedBy(@NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState state,
+                          @Nullable LivingEntity placer, ItemStack stack) {
     if (stack.hasCustomHoverName()) {
       BlockEntity tileentity = worldIn.getBlockEntity(pos);
       if (tileentity instanceof MetalBarrelBlockEntity) {
@@ -101,11 +107,4 @@ public class MetalBarrelBlock extends BarrelBlock {
       }
     }
   }
-
-  /**
-  @Nullable
-  @Override
-  public ToolType getHarvestTool(BlockState state) {
-    return ToolType.PICKAXE;
-  }**/
 }

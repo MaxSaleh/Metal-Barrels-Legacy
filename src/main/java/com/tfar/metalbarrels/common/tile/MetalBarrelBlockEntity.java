@@ -1,31 +1,22 @@
-package com.tfar.metalbarrels.tile;
+package com.tfar.metalbarrels.common.tile;
 
-import com.tfar.metalbarrels.container.MetalBarrelContainer;
-import com.tfar.metalbarrels.init.ModBlockEntities;
-import com.tfar.metalbarrels.init.ModMenuTypes;
-import com.tfar.metalbarrels.util.MetalBarrelBlockEntityType;
-import com.tfar.metalbarrels.block.MetalBarrelBlock;
+import com.tfar.metalbarrels.common.block.MetalBarrelBlock;
+import com.tfar.metalbarrels.common.container.MetalBarrelContainer;
+import com.tfar.metalbarrels.common.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BarrelBlock;
 import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,28 +28,25 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-
 public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider, Nameable {
 
-  protected final int width;
-  protected final int height;
+  protected static int width;
+  protected static int height;
   protected Component customName;
-  protected final PropertyDispatch.TriFunction<Integer, Inventory, ContainerLevelAccess, AbstractContainerMenu> containerFactory;
+  protected static PropertyDispatch.TriFunction<Integer, Inventory, ContainerLevelAccess, AbstractContainerMenu> containerFactory;
   public final LazyOptional<IItemHandler> optional;
   public final ItemStackHandler handler;
   public int players = 0;
 
   public static @NotNull MetalBarrelBlockEntity copper(BlockPos blockPos, BlockState blockState) {
+    width = 9;
+    height = 5;
+    containerFactory = MetalBarrelContainer::copper;
     return new MetalBarrelBlockEntity(ModBlockEntities.COPPER_BARREL.get(), blockPos, blockState);
   }
 
   public MetalBarrelBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
     super(blockEntityType, blockPos, blockState);
-    this.width = 9; // TODO
-    this.height = 5; // TODO
-    this.containerFactory = MetalBarrelContainer::copper; // TODO
-
     handler = new ItemStackHandler(width * height) {
       @Override
       protected void onContentsChanged(int slot) {

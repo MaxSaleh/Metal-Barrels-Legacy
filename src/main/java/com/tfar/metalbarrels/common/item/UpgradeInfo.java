@@ -1,4 +1,4 @@
-package com.tfar.metalbarrels.item;
+package com.tfar.metalbarrels.common.item;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
