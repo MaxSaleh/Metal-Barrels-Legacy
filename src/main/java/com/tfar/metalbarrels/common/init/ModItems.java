@@ -15,6 +15,34 @@ public class ModItems {
             "copper_barrel", () -> new BlockItem(ModBlocks.COPPER_BARREL.get(), new Item.Properties().tab(ModTabs.tab))
     );
 
+    public static final RegistryObject<BlockItem> IRON_BARREL = REGISTER.register(
+            "iron_barrel", () -> new BlockItem(ModBlocks.IRON_BARREL.get(), new Item.Properties().tab(ModTabs.tab))
+    );
+
+    public static final RegistryObject<BlockItem> SILVER_BARREL = REGISTER.register(
+            "silver_barrel", () -> new BlockItem(ModBlocks.SILVER_BARREL.get(), new Item.Properties().tab(ModTabs.tab))
+    );
+
+    public static final RegistryObject<BlockItem> GOLD_BARREL = REGISTER.register(
+            "gold_barrel", () -> new BlockItem(ModBlocks.GOLD_BARREL.get(), new Item.Properties().tab(ModTabs.tab))
+    );
+
+    public static final RegistryObject<BlockItem> DIAMOND_BARREL = REGISTER.register(
+            "diamond_barrel", () -> new BlockItem(ModBlocks.DIAMOND_BARREL.get(), new Item.Properties().tab(ModTabs.tab))
+    );
+
+    public static final RegistryObject<BlockItem> OBSIDIAN_BARREL = REGISTER.register(
+            "obsidian_barrel", () -> new BlockItem(ModBlocks.OBSIDIAN_BARREL.get(), new Item.Properties().tab(ModTabs.tab))
+    );
+
+    public static final RegistryObject<BlockItem> NETHERITE_BARREL = REGISTER.register(
+            "netherite_barrel", () -> new BlockItem(ModBlocks.NETHERITE_BARREL.get(), new Item.Properties().tab(ModTabs.tab))
+    );
+
+    public static final RegistryObject<BlockItem> CRYSTAL_BARREL = REGISTER.register(
+            "crystal_barrel", () -> new BlockItem(ModBlocks.CRYSTAL_BARREL.get(), new Item.Properties().tab(ModTabs.tab))
+    );
+
     /**
      * WOOD TO X
      */

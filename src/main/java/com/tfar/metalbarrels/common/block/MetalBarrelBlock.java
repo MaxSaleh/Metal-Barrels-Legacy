@@ -78,11 +78,17 @@ public class MetalBarrelBlock extends BarrelBlock {
   @Nullable
   @Override
   public BlockEntity newBlockEntity(@NotNull BlockPos state, @NotNull BlockState blockState) {
-    if (barrelName.equals("copper")) {
-      return MetalBarrelBlockEntity.copper(state, blockState);
-    } else {
-      return null;
-    }
+    return switch (barrelName) {
+      case "copper" -> MetalBarrelBlockEntity.copper(state, blockState);
+      case "iron" -> MetalBarrelBlockEntity.iron(state, blockState);
+      case "silver" -> MetalBarrelBlockEntity.silver(state, blockState);
+      case "gold" -> MetalBarrelBlockEntity.gold(state, blockState);
+      case "diamond" -> MetalBarrelBlockEntity.diamond(state, blockState);
+      case "obsidian" -> MetalBarrelBlockEntity.obsidian(state, blockState);
+      case "netherite" -> MetalBarrelBlockEntity.netherite(state, blockState);
+      case "crystal" -> MetalBarrelBlockEntity.crystal(state, blockState);
+      default -> null;
+    };
   }
 
   @Override

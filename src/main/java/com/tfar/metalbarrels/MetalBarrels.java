@@ -37,6 +37,13 @@ public class MetalBarrels {
 
   private void doClientStuff(final FMLClientSetupEvent event) {
     MenuScreens.register(ModMenuTypes.COPPER_CONTAINER.get(), MetalBarrelScreen::copper);
+    MenuScreens.register(ModMenuTypes.IRON_CONTAINER.get(), MetalBarrelScreen::iron);
+    MenuScreens.register(ModMenuTypes.SILVER_CONTAINER.get(), MetalBarrelScreen::silver);
+    MenuScreens.register(ModMenuTypes.GOLD_CONTAINER.get(), MetalBarrelScreen::gold);
+    MenuScreens.register(ModMenuTypes.DIAMOND_CONTAINER.get(), MetalBarrelScreen::diamond);
+    MenuScreens.register(ModMenuTypes.OBSIDIAN_CONTAINER.get(), MetalBarrelScreen::obsidian);
+    MenuScreens.register(ModMenuTypes.NETHERITE_CONTAINER.get(), MetalBarrelScreen::netherite);
+    MenuScreens.register(ModMenuTypes.CRYSTAL_CONTAINER.get(), MetalBarrelScreen::crystal);
   }
 
 }

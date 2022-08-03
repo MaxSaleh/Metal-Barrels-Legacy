@@ -70,24 +70,32 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
     return new MetalBarrelScreen(barrelContainer,playerInventory,component,COPPER,176,204);
   }
 
-  public static MetalBarrelScreen iron(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
+  public static @NotNull MetalBarrelScreen iron(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
     return new MetalBarrelScreen(barrelContainer,playerInventory,component,IRON,176,222);
   }
 
-  public static MetalBarrelScreen silver(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
+  public static @NotNull MetalBarrelScreen silver(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
     return new MetalBarrelScreen(barrelContainer,playerInventory,component,SILVER,176,258);
   }
 
-  public static MetalBarrelScreen gold(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
+  public static @NotNull MetalBarrelScreen gold(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
     return new MetalBarrelScreen(barrelContainer,playerInventory,component,GOLD,176,276);
   }
 
-  public static MetalBarrelScreen diamond(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
+  public static @NotNull MetalBarrelScreen diamond(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
     return new MetalBarrelScreen(barrelContainer,playerInventory,component,DIAMOND,230,276);
   }
 
-  public static MetalBarrelScreen netherite(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
+  public static @NotNull MetalBarrelScreen obsidian(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
+    return new MetalBarrelScreen(barrelContainer,playerInventory,component,DIAMOND,230,276);
+  }
+
+  public static @NotNull MetalBarrelScreen netherite(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
     return new MetalBarrelScreen(barrelContainer,playerInventory,component,NETHERITE,284,276);
+  }
+
+  public static @NotNull MetalBarrelScreen crystal(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
+    return new MetalBarrelScreen(barrelContainer,playerInventory,component,DIAMOND,230,276);
   }
 
 }

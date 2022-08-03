@@ -45,6 +45,55 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     return new MetalBarrelBlockEntity(ModBlockEntities.COPPER_BARREL.get(), blockPos, blockState);
   }
 
+  public static @NotNull MetalBarrelBlockEntity iron(BlockPos blockPos, BlockState blockState) {
+    width = 9;
+    height = 6;
+    containerFactory = MetalBarrelContainer::iron;
+    return new MetalBarrelBlockEntity(ModBlockEntities.IRON_BARREL.get(), blockPos, blockState);
+  }
+
+  public static @NotNull MetalBarrelBlockEntity silver(BlockPos blockPos, BlockState blockState) {
+    width = 9;
+    height = 8;
+    containerFactory = MetalBarrelContainer::silver;
+    return new MetalBarrelBlockEntity(ModBlockEntities.SILVER_BARREL.get(), blockPos, blockState);
+  }
+
+  public static @NotNull MetalBarrelBlockEntity gold(BlockPos blockPos, BlockState blockState) {
+    width = 9;
+    height = 9;
+    containerFactory = MetalBarrelContainer::gold;
+    return new MetalBarrelBlockEntity(ModBlockEntities.GOLD_BARREL.get(), blockPos, blockState);
+  }
+
+  public static @NotNull MetalBarrelBlockEntity diamond(BlockPos blockPos, BlockState blockState) {
+    width = 12;
+    height = 9;
+    containerFactory = MetalBarrelContainer::diamond;
+    return new MetalBarrelBlockEntity(ModBlockEntities.DIAMOND_BARREL.get(), blockPos, blockState);
+  }
+
+  public static @NotNull MetalBarrelBlockEntity obsidian(BlockPos blockPos, BlockState blockState) {
+    width = 12;
+    height = 9;
+    containerFactory = MetalBarrelContainer::obsidian;
+    return new MetalBarrelBlockEntity(ModBlockEntities.OBSIDIAN_BARREL.get(), blockPos, blockState);
+  }
+
+  public static @NotNull MetalBarrelBlockEntity netherite(BlockPos blockPos, BlockState blockState) {
+    width = 15;
+    height = 9;
+    containerFactory = MetalBarrelContainer::netherite;
+    return new MetalBarrelBlockEntity(ModBlockEntities.NETHERITE_BARREL.get(), blockPos, blockState);
+  }
+
+  public static @NotNull MetalBarrelBlockEntity crystal(BlockPos blockPos, BlockState blockState) {
+    width = 12;
+    height = 9;
+    containerFactory = MetalBarrelContainer::crystal;
+    return new MetalBarrelBlockEntity(ModBlockEntities.CRYSTAL_BARREL.get(), blockPos, blockState);
+  }
+
   public MetalBarrelBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
     super(blockEntityType, blockPos, blockState);
     handler = new ItemStackHandler(width * height) {
