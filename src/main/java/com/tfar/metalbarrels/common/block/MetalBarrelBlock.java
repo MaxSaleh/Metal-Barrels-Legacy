@@ -25,10 +25,13 @@ import static net.minecraft.world.Containers.dropItemStack;
 public class MetalBarrelBlock extends BarrelBlock {
 
   protected final String barrelName;
+  private final BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier;
 
-  public MetalBarrelBlock(Properties properties, String barrelName, BlockEntityType<?> blockEntityType) {
+  public MetalBarrelBlock(Properties properties, String barrelName,
+                          BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
     super(properties);
     this.barrelName = barrelName;
+    this.blockEntitySupplier = blockEntitySupplier;
   }
 
   @Override
@@ -73,7 +76,7 @@ public class MetalBarrelBlock extends BarrelBlock {
   @Nullable
   @Override
   public BlockEntity newBlockEntity(@NotNull BlockPos state, @NotNull BlockState blockState) {
-    return MetalBarrelBlockEntity.copper(state, blockState);
+    return blockEntitySupplier.create(state, blockState);
     /**
     return switch (barrelName) {
       case "copper" -> MetalBarrelBlockEntity.copper(state, blockState);

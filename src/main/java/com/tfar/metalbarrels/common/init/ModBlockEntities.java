@@ -1,7 +1,7 @@
 package com.tfar.metalbarrels.common.init;
 
-import com.tfar.metalbarrels.MetalBarrels;
 import com.tfar.metalbarrels.common.tile.MetalBarrelBlockEntity;
+import com.tfar.metalbarrels.MetalBarrels;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

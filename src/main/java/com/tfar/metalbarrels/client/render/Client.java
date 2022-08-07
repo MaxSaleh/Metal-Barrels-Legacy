@@ -1,8 +1,6 @@
 package com.tfar.metalbarrels.client.render;
 
 import com.tfar.metalbarrels.MetalBarrels;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
