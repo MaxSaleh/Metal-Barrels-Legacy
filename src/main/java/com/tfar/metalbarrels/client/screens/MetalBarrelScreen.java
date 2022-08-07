@@ -46,7 +46,7 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
     if (!isTall) {
       this.blit(stack,i, j, 0, 0, this.imageWidth, this.imageHeight);
     } else if (!isWide) {
-      blit(stack,i, j, 0, 0,getBlitOffset(), this.imageWidth, this.imageHeight,512,256);
+      blit(stack,i, j, 0, 0,getBlitOffset(), this.imageWidth, this.imageHeight,256,512);
     } else {
       blit(stack,i, j, 0, 0,getBlitOffset(), this.imageWidth, this.imageHeight,512,512);
     }
