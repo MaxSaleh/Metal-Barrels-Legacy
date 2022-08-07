@@ -2,15 +2,11 @@ package com.tfar.metalbarrels.common.block;
 
 import com.tfar.metalbarrels.common.tile.MetalBarrelBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -22,7 +18,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import static net.minecraft.world.Containers.dropItemStack;
@@ -31,7 +26,7 @@ public class MetalBarrelBlock extends BarrelBlock {
 
   protected final String barrelName;
 
-  public MetalBarrelBlock(Properties properties, String barrelName) {
+  public MetalBarrelBlock(Properties properties, String barrelName, BlockEntityType<?> blockEntityType) {
     super(properties);
     this.barrelName = barrelName;
   }
@@ -78,6 +73,8 @@ public class MetalBarrelBlock extends BarrelBlock {
   @Nullable
   @Override
   public BlockEntity newBlockEntity(@NotNull BlockPos state, @NotNull BlockState blockState) {
+    return MetalBarrelBlockEntity.copper(state, blockState);
+    /**
     return switch (barrelName) {
       case "copper" -> MetalBarrelBlockEntity.copper(state, blockState);
       case "iron" -> MetalBarrelBlockEntity.iron(state, blockState);
@@ -89,6 +86,7 @@ public class MetalBarrelBlock extends BarrelBlock {
       case "crystal" -> MetalBarrelBlockEntity.crystal(state, blockState);
       default -> null;
     };
+     **/
   }
 
   @Override

@@ -83,7 +83,7 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
   }
 
   public static @NotNull MetalBarrelScreen diamond(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
-    return new MetalBarrelScreen(barrelContainer,playerInventory,component,DIAMOND,230,276);
+    return new MetalBarrelScreen(barrelContainer, playerInventory, component, DIAMOND,230, 276);
   }
 
   public static @NotNull MetalBarrelScreen obsidian(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {

@@ -38,72 +38,72 @@ public class MetalBarrelContainer extends AbstractContainerMenu {
 	}
 
 	public static @NotNull MetalBarrelContainer iron(int containerId, Inventory inventory) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.IRON_CONTAINER.get(), containerId, inventory,
 				9,6,8,18, 8,140);
 	}
 
 	public static @NotNull MetalBarrelContainer iron(int containerId, Inventory inventory, ContainerLevelAccess callable) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.IRON_CONTAINER.get(), containerId, inventory,
 				9,6,8,18, 8,140, callable);
 	}
 
 	public static @NotNull MetalBarrelContainer silver(int containerId, Inventory inventory) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.SILVER_CONTAINER.get(), containerId, inventory,
 				9,8,8,18, 8,176);
 	}
 
 	public static @NotNull MetalBarrelContainer silver(int containerId, Inventory inventory, ContainerLevelAccess callable) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.SILVER_CONTAINER.get(), containerId, inventory,
 				9,8,8,18, 8,176, callable);
 	}
 
 	public static @NotNull MetalBarrelContainer gold(int containerId, Inventory inventory) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.GOLD_CONTAINER.get(), containerId, inventory,
 				9,9,8,18, 8,194);
 	}
 
 	public static @NotNull MetalBarrelContainer gold(int containerId, Inventory inventory, ContainerLevelAccess callable) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.GOLD_CONTAINER.get(), containerId, inventory,
 				9,9,8,18, 8,194, callable);
 	}
 
 	public static @NotNull MetalBarrelContainer diamond(int containerId, Inventory inventory) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.DIAMOND_CONTAINER.get(), containerId, inventory,
 				12,9,8,18, 35,194);
 	}
 
 	public static @NotNull MetalBarrelContainer diamond(int containerId, Inventory inventory, ContainerLevelAccess callable) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.DIAMOND_CONTAINER.get(), containerId, inventory,
 				12,9,8,18, 35,194, callable);
 	}
 
 	public static @NotNull MetalBarrelContainer obsidian(int containerId, Inventory inventory) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.OBSIDIAN_CONTAINER.get(), containerId, inventory,
 				12,9,8,18, 35,194);
 	}
 
 	public static @NotNull MetalBarrelContainer obsidian(int containerId, Inventory inventory, ContainerLevelAccess callable) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.OBSIDIAN_CONTAINER.get(), containerId, inventory,
 				12,9,8,18, 35,194, callable);
 	}
 
 	public static @NotNull MetalBarrelContainer netherite(int containerId, Inventory inventory) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.NETHERITE_CONTAINER.get(), containerId, inventory,
 				15,9,8,18, 62, 194);
 	}
 
 	public static @NotNull MetalBarrelContainer netherite(int containerId, Inventory inventory, ContainerLevelAccess callable) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.NETHERITE_CONTAINER.get(), containerId, inventory,
 				15,9,8,18, 62, 194, callable);
 	}
 
 	public static @NotNull MetalBarrelContainer crystal(int containerId, Inventory inventory) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.CRYSTAL_CONTAINER.get(), containerId, inventory,
 				12,9,8,18, 35,194);
 	}
 
 	public static @NotNull MetalBarrelContainer crystal(int containerId, Inventory inventory, ContainerLevelAccess callable) {
-		return new MetalBarrelContainer(ModMenuTypes.COPPER_CONTAINER.get(), containerId, inventory,
+		return new MetalBarrelContainer(ModMenuTypes.CRYSTAL_CONTAINER.get(), containerId, inventory,
 				12,9,8,18, 35,194, callable);
 	}
 
@@ -123,7 +123,7 @@ public class MetalBarrelContainer extends AbstractContainerMenu {
 		for (int i = 0; i < height; i++)
 			for (int j = 0; j < width; j++)
 				addSlot(new SlotItemHandler(stackHandler,
-						j + width * i, containerX + j * 18, containerY + i * 18));
+						j + width, containerX + j * 18, containerY + i * 18));
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
