@@ -1,15 +1,28 @@
 package com.tfar.metalbarrels.common.init;
 
 import com.tfar.metalbarrels.MetalBarrels;
+import com.tfar.metalbarrels.common.item.BarrelUpgradeItem;
+import com.tfar.metalbarrels.common.item.UpgradeInfo;
+import com.tfar.metalbarrels.util.ModTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class ModItems {
 
     public static final DeferredRegister<Item> REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS, MetalBarrels.MODID);
+    private static final Item.Properties properties = new Item.Properties().tab(ModTabs.tab);
+
+    /**
+     * Mod Block Items.
+     */
 
     public static final RegistryObject<BlockItem> COPPER_BARREL = REGISTER.register(
             "copper_barrel", () -> new BlockItem(ModBlocks.COPPER_BARREL.get(), new Item.Properties().tab(ModTabs.tab))
@@ -44,16 +57,30 @@ public class ModItems {
     );
 
     /**
-     * WOOD TO X
+     * Mod Items.
      */
 
-    public static final Item.Properties properties = new Item.Properties().tab(ModTabs.tab);
+    public static void registerItems() {
+        for (Block block : ModBlocks.MOD_BLOCKS) {
+            Item.Properties properties = new Item.Properties().tab(ModTabs.tab);
+
+            if (block == ModBlocks.NETHERITE_BARREL.get()) {
+                properties.fireResistant(); // TODO -> isBurnable
+            }
+
+            Item item = new BlockItem(block, properties);
+            REGISTER.register(block.getName().toString(), () -> item);
+        }
+    }
 
     /**
-    public static final RegistryObject<Item> WOOD_TO_COPPER = REGISTER.register(
-            "wood_to_copper", () -> new BarrelUpgradeItem(properties,  new UpgradeInfo(new ArrayList<>(Collections.singleton(ModTags.Blocks.WOODEN_BARRELS)),
-                    new ArrayList<>(Collections.singleton(ObjectHolders.COPPER_BARREL)))
-                    .add(Tags.Blocks.CHESTS_WOODEN, IronChestObjectHolders.COPPER_CHEST,"ironchest"))
-    );**/
+     * Wood to X.
+     */
 
+    public static final RegistryObject<BarrelUpgradeItem> WOOD_TO_COPPER = REGISTER.register(
+            "wood_to_copper", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
+                    new ArrayList<>(Collections.singleton(ModTags.Blocks.WOODEN_BARRELS)),
+                    new ArrayList<>(Collections.singleton(ModBlocks.COPPER_BARREL.get()))
+            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.COPPER_BARREL.get(), MetalBarrels.MODID))
+    );
 }

@@ -15,9 +15,7 @@ import org.jetbrains.annotations.NotNull;
 public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContainer> {
 
   private final ResourceLocation texture;
-
   private final boolean isTall;
-
   private final boolean isWide;
 
   public MetalBarrelScreen(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component,
@@ -35,7 +33,6 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
   public void render(@NotNull PoseStack poseStack, int x, int y, float partialTicks) {
     this.renderBackground(poseStack);
     super.render(poseStack, x, y, partialTicks);
-    //this.renderBg(poseStack, partialTicks, x, y);
     this.renderTooltip(poseStack, x, y);
   }
 
@@ -43,9 +40,6 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
   protected void renderBg(@NotNull PoseStack stack, float partialTicks, int mouseX, int mouseY) {
     RenderSystem.setShader(GameRenderer::getPositionTexShader);
     RenderSystem.setShaderTexture(0, texture);
-    RenderSystem.enableBlend();
-    RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
     int i = (this.width - this.imageWidth) / 2;
     int j = (this.height - this.imageHeight) / 2;
@@ -56,6 +50,10 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
     } else {
       blit(stack,i, j, 0, 0,getBlitOffset(), this.imageWidth, this.imageHeight,512,512);
     }
+
+    RenderSystem.enableBlend();
+    RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
   }
 
   private static final ResourceLocation COPPER = new ResourceLocation(MetalBarrels.MODID,"textures/gui/container/copper.png");

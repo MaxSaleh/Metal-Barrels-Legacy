@@ -10,9 +10,14 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Supplier;
+
 public class ModBlocks {
 
     public static final DeferredRegister<Block> REGISTER = DeferredRegister.create(ForgeRegistries.BLOCKS, MetalBarrels.MODID);
+    public static final Set<Block> MOD_BLOCKS = new HashSet<>();
 
     /**
      * Metal Barrels Block Registry.
@@ -57,5 +62,4 @@ public class ModBlocks {
             "crystal_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR), // TODO
                     "crystal", MetalBarrelBlockEntity::crystal)
     );
-
 }

@@ -123,7 +123,7 @@ public class BarrelUpgradeItem extends Item {
       heldStack.shrink(1);
 
     player.sendSystemMessage(Component.translatable("metalbarrels.upgrade_successful")
-            .append((Component) Style.EMPTY.applyFormat(ChatFormatting.GREEN)));
+            .withStyle(ChatFormatting.GREEN));
 
     return InteractionResult.SUCCESS;
   }

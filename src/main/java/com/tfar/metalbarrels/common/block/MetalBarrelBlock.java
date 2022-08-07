@@ -1,5 +1,6 @@
 package com.tfar.metalbarrels.common.block;
 
+import com.tfar.metalbarrels.common.init.ModBlocks;
 import com.tfar.metalbarrels.common.tile.MetalBarrelBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -32,6 +33,8 @@ public class MetalBarrelBlock extends BarrelBlock {
     super(properties);
     this.barrelName = barrelName;
     this.blockEntitySupplier = blockEntitySupplier;
+
+    ModBlocks.MOD_BLOCKS.add(this);
   }
 
   @Override
