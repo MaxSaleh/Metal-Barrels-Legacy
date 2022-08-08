@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.NotNull;
+import org.antlr.v4.runtime.misc.NotNull;
 
 public class MetalBarrelContainer extends AbstractContainerMenu {
 

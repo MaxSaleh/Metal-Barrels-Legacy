@@ -9,6 +9,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.MenuProvider;
@@ -25,8 +26,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.antlr.v4.runtime.misc.NotNull;
+
+import javax.annotation.Nullable;
 
 public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider, Nameable {
 
@@ -97,13 +99,13 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag) {
+  public CompoundTag save(CompoundTag tag) {
     CompoundTag compound = this.handler.serializeNBT();
     tag.put("inv", compound);
     if (this.customName != null) {
       tag.putString("CustomName", Component.Serializer.toJson(this.customName));
     }
-    super.saveAdditional(tag);
+    return super.save(tag);
   }
 
   @Override
@@ -151,7 +153,7 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   }
 
   protected Component getDefaultName() {
-    return Component.translatable(getBlockState().getBlock().getDescriptionId());
+    return new TextComponent(getBlockState().getBlock().getDescriptionId());
   }
 
   public void setCustomName(Component name) {

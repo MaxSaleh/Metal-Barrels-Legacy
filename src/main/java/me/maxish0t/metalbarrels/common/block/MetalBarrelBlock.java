@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.NotNull;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.stream.IntStream;

@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
@@ -29,6 +30,7 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -50,14 +52,14 @@ public class BarrelUpgradeItem extends Item {
     method = ObfuscationReflectionHelper.findMethod(ChestBlockEntity.class,"getItems"); // getItems
   }
 
-  private static final Component s = Component.translatable("tooltip.metalbarrels.ironchest")
+  private static final Component s = new TranslatableComponent("tooltip.metalbarrels.ironchest")
           .append(ChatFormatting.GREEN.toString());
 
   public static boolean IRON_CHESTS_LOADED;
 
   @Override
   @OnlyIn(Dist.CLIENT)
-  public void appendHoverText(ItemStack p_41421_, @org.jetbrains.annotations.Nullable Level p_41422_, List<Component> tooltip, TooltipFlag p_41424_) {
+  public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> tooltip, TooltipFlag p_41424_) {
     if (IRON_CHESTS_LOADED) {
       tooltip.add(s);
     }
@@ -80,8 +82,8 @@ public class BarrelUpgradeItem extends Item {
 
     if (state.getBlock() instanceof BarrelBlock)
       if (state.getValue(BlockStateProperties.OPEN)) {
-        player.sendSystemMessage(Component.translatable("metalbarrels.in_use")
-                .append((Component) Style.EMPTY.applyFormat(ChatFormatting.RED)));
+        player.sendMessage(new TranslatableComponent("metalbarrels.in_use")
+                .append((Component) Style.EMPTY.applyFormat(ChatFormatting.RED)), player.getUUID());
         return InteractionResult.PASS;
       }
 
@@ -136,7 +138,7 @@ public class BarrelUpgradeItem extends Item {
     // Barrel Block Item Transfer
     if (newBarrel instanceof MetalBarrelBlockEntity) {
       for (ItemStack itemStack : barrelItems) {
-        newBarrel.saveToItem(itemStack);
+        //newBarrel.saveToItem(itemStack); // TODO
       }
     }
 
@@ -146,8 +148,8 @@ public class BarrelUpgradeItem extends Item {
     if (!player.getAbilities().instabuild)
       heldStack.shrink(1);
 
-    player.sendSystemMessage(Component.translatable("metalbarrels.upgrade_successful")
-            .withStyle(ChatFormatting.GREEN));
+    player.sendMessage(new TranslatableComponent("metalbarrels.upgrade_successful")
+            .withStyle(ChatFormatting.GREEN), player.getUUID());
 
     return InteractionResult.SUCCESS;
   }

@@ -9,7 +9,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.NotNull;
+import org.antlr.v4.runtime.misc.NotNull;
 
 public class CrystalBarrelBlock extends MetalBarrelBlock {
 

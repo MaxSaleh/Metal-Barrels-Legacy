@@ -3,14 +3,14 @@ package me.maxish0t.metalbarrels.common.init;
 import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import me.maxish0t.metalbarrels.MetalBarrels;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public class ModBlockEntities {
 
     public static final DeferredRegister<BlockEntityType<?>> REGISTER =
-            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MetalBarrels.MODID);
+            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MetalBarrels.MODID);
 
     /**
      * Metal Barrels Block Entity Type Registry.

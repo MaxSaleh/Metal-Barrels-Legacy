@@ -3,13 +3,13 @@ package me.maxish0t.metalbarrels.common.init;
 import me.maxish0t.metalbarrels.MetalBarrels;
 import me.maxish0t.metalbarrels.common.container.MetalBarrelContainer;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> REGISTER =
-            DeferredRegister.create(ForgeRegistries.MENU_TYPES, MetalBarrels.MODID);
+            DeferredRegister.create(ForgeRegistries.CONTAINERS, MetalBarrels.MODID);
 
     /**
      * Metal Barrels Menu Registry.
