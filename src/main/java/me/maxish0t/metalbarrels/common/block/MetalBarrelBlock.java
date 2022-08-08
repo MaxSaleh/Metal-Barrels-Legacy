@@ -1,7 +1,7 @@
 package me.maxish0t.metalbarrels.common.block;
 
 import me.maxish0t.metalbarrels.common.init.ModBlocks;
-import me.maxish0t.metalbarrels.common.tile.MetalBarrelBlockEntity;
+import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;

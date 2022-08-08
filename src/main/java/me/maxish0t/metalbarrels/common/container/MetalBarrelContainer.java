@@ -1,7 +1,7 @@
 package me.maxish0t.metalbarrels.common.container;
 
 import me.maxish0t.metalbarrels.common.init.ModMenuTypes;
-import me.maxish0t.metalbarrels.common.tile.MetalBarrelBlockEntity;
+import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import me.maxish0t.metalbarrels.MetalBarrels;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
@@ -123,7 +123,7 @@ public class MetalBarrelContainer extends AbstractContainerMenu {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				addSlot(new SlotItemHandler(stackHandler,
-					j + width, containerX + j * 18, containerY + i * 18));
+						i * height + j, containerX + j * 18, containerY + i * 18));
 			}
 		}
 

@@ -1,6 +1,6 @@
 package me.maxish0t.metalbarrels.common.init;
 
-import me.maxish0t.metalbarrels.common.tile.MetalBarrelBlockEntity;
+import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import me.maxish0t.metalbarrels.MetalBarrels;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;

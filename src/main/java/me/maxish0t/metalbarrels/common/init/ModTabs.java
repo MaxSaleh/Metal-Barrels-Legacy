@@ -9,7 +9,7 @@ public class ModTabs {
     public static final CreativeModeTab tab = new CreativeModeTab(MetalBarrels.MODID) {
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(ModBlocks.COPPER_BARREL.get());
+            return new ItemStack(ModBlocks.DIAMOND_BARREL.get());
         }
     };
 

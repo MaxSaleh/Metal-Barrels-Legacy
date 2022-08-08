@@ -1,4 +1,4 @@
-package me.maxish0t.metalbarrels.common.tile;
+package me.maxish0t.metalbarrels.common.block.entity;
 
 import me.maxish0t.metalbarrels.common.block.MetalBarrelBlock;
 import me.maxish0t.metalbarrels.common.container.MetalBarrelContainer;

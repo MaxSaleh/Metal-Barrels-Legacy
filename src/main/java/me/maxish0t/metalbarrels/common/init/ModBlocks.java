@@ -1,7 +1,8 @@
 package me.maxish0t.metalbarrels.common.init;
 
+import me.maxish0t.metalbarrels.common.block.CrystalBarrelBlock;
 import me.maxish0t.metalbarrels.common.block.MetalBarrelBlock;
-import me.maxish0t.metalbarrels.common.tile.MetalBarrelBlockEntity;
+import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import me.maxish0t.metalbarrels.MetalBarrels;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -58,7 +59,7 @@ public class ModBlocks {
     );
 
     public static final RegistryObject<Block> CRYSTAL_BARREL = REGISTER.register(
-            "crystal_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR), // TODO
+            "crystal_barrel", () -> new CrystalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR),
                     "crystal", MetalBarrelBlockEntity::crystal)
     );
 }
