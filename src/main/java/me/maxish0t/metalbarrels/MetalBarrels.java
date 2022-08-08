@@ -3,7 +3,6 @@ package me.maxish0t.metalbarrels;
 import me.maxish0t.metalbarrels.common.init.ModMenuTypes;
 import me.maxish0t.metalbarrels.common.init.ModRegistries;
 import me.maxish0t.metalbarrels.common.item.BarrelUpgradeItem;
-import me.maxish0t.metalbarrels.network.PacketHandler;
 import me.maxish0t.metalbarrels.client.screens.MetalBarrelScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -32,7 +31,6 @@ public class MetalBarrels {
 
   private void commonSetup(final FMLCommonSetupEvent event){
     BarrelUpgradeItem.IRON_CHESTS_LOADED = ModList.get().isLoaded("ironchest");
-    PacketHandler.register();
   }
 
   private void doClientStuff(final FMLClientSetupEvent event) {
