@@ -4,9 +4,9 @@ plugins {
     id 'net.minecraftforge.gradle' version '5.1.+'
 }
 
-version = "${mc_version}-${mod_version}"
-group = 'com.tfar.metalbarrels'
-archivesBaseName = 'metalbarrels'
+version = "1.19-0.1"
+group = 'me.maxish0t.metalbarrels'
+archivesBaseName = 'MetalBarrels'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
