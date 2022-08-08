@@ -9,6 +9,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.MenuProvider;
@@ -151,7 +152,7 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   }
 
   protected Component getDefaultName() {
-    return Component.translatable(getBlockState().getBlock().getDescriptionId());
+    return new TextComponent(getBlockState().getBlock().getDescriptionId());
   }
 
   public void setCustomName(Component name) {

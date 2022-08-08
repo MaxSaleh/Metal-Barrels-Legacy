@@ -9,7 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> REGISTER =
-            DeferredRegister.create(ForgeRegistries.MENU_TYPES, MetalBarrels.MODID);
+            DeferredRegister.create(ForgeRegistries.CONTAINERS, MetalBarrels.MODID);
 
     /**
      * Metal Barrels Menu Registry.

@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
@@ -50,7 +51,7 @@ public class BarrelUpgradeItem extends Item {
     method = ObfuscationReflectionHelper.findMethod(ChestBlockEntity.class,"getItems"); // getItems
   }
 
-  private static final Component s = Component.translatable("tooltip.metalbarrels.ironchest")
+  private static final Component s = new TranslatableComponent("tooltip.metalbarrels.ironchest")
           .append(ChatFormatting.GREEN.toString());
 
   public static boolean IRON_CHESTS_LOADED;
@@ -80,8 +81,8 @@ public class BarrelUpgradeItem extends Item {
 
     if (state.getBlock() instanceof BarrelBlock)
       if (state.getValue(BlockStateProperties.OPEN)) {
-        player.sendSystemMessage(Component.translatable("metalbarrels.in_use")
-                .append((Component) Style.EMPTY.applyFormat(ChatFormatting.RED)));
+        player.sendMessage(new TranslatableComponent("metalbarrels.in_use")
+                .append((Component) Style.EMPTY.applyFormat(ChatFormatting.RED)), player.getUUID());
         return InteractionResult.PASS;
       }
 
@@ -146,8 +147,8 @@ public class BarrelUpgradeItem extends Item {
     if (!player.getAbilities().instabuild)
       heldStack.shrink(1);
 
-    player.sendSystemMessage(Component.translatable("metalbarrels.upgrade_successful")
-            .withStyle(ChatFormatting.GREEN));
+    player.sendMessage(new TranslatableComponent("metalbarrels.upgrade_successful")
+            .withStyle(ChatFormatting.GREEN), player.getUUID());
 
     return InteractionResult.SUCCESS;
   }

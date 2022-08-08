@@ -10,7 +10,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModBlockEntities {
 
     public static final DeferredRegister<BlockEntityType<?>> REGISTER =
-            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MetalBarrels.MODID);
+            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MetalBarrels.MODID);
 
     /**
      * Metal Barrels Block Entity Type Registry.
