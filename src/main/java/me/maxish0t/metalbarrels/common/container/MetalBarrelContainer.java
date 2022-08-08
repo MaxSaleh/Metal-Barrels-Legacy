@@ -123,7 +123,7 @@ public class MetalBarrelContainer extends AbstractContainerMenu {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				addSlot(new SlotItemHandler(stackHandler,
-						i * height + j, containerX + j * 18, containerY + i * 18));
+						i + j * height, containerX + j * 18, containerY + i * 18)); // i * height + j
 			}
 		}
 
