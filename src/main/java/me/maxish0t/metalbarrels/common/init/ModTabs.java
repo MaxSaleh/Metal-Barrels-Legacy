@@ -1,7 +1,6 @@
 package me.maxish0t.metalbarrels.common.init;
 
 import me.maxish0t.metalbarrels.MetalBarrels;
-import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
