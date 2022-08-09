@@ -45,12 +45,6 @@ public class BarrelUpgradeItem extends Item {
     this.upgradeInfo = info;
   }
 
-  public static final Method method;
-
-  static {
-    method = ObfuscationReflectionHelper.findMethod(ChestBlockEntity.class,"getItems"); // getItems
-  }
-
   private static final Component s = new TranslatableComponent("tooltip.metalbarrels.ironchest")
           .append(ChatFormatting.GREEN.toString());
 
@@ -111,14 +105,14 @@ public class BarrelUpgradeItem extends Item {
     }
 
     if (oldBarrel instanceof ChestBlockEntity) {
-      try {
-        oldBarrelContents.addAll((Collection<? extends ItemStack>) method.invoke(oldBarrel));
-      } catch (IllegalAccessException | InvocationTargetException e) {
-        e.printStackTrace();
+      for (int i = 0; i < 27; i++) {
+        oldBarrelContents.add(((ChestBlockEntity) oldBarrel).getItem(i));
       }
-    } else oldBarrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            .ifPresent((itemHandler) -> IntStream.range(0, itemHandler.getSlots())
-                    .mapToObj(itemHandler::getStackInSlot).forEach(oldBarrelContents::add));
+    } else {
+      oldBarrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+              .ifPresent((itemHandler) -> IntStream.range(0, itemHandler.getSlots())
+                      .mapToObj(itemHandler::getStackInSlot).forEach(oldBarrelContents::add));
+    }
     oldBarrel.setRemoved();
 
     Block newBlock = upgradeInfo.getBlock(state.getBlock());
