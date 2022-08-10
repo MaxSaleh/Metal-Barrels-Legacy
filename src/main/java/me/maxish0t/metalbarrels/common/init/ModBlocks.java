@@ -24,42 +24,50 @@ public class ModBlocks {
      */
 
     public static final RegistryObject<Block> COPPER_BARREL = REGISTER.register(
-            "copper_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR),
+            "copper_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR)
+                    .requiresCorrectToolForDrops().strength(2.5F),
                     "copper", MetalBarrelBlockEntity::copper)
     );
 
     public static final RegistryObject<Block> IRON_BARREL = REGISTER.register(
-            "iron_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR),
+            "iron_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR)
+                    .requiresCorrectToolForDrops().strength(2.5F),
                     "iron", MetalBarrelBlockEntity::iron)
     );
 
     public static final RegistryObject<Block> SILVER_BARREL = REGISTER.register(
-            "silver_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR),
+            "silver_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR)
+                    .requiresCorrectToolForDrops().strength(2.5F),
                     "silver", MetalBarrelBlockEntity::silver)
     );
 
     public static final RegistryObject<Block> GOLD_BARREL = REGISTER.register(
-            "gold_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR),
+            "gold_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR)
+                    .requiresCorrectToolForDrops().strength(2.5F),
                     "gold", MetalBarrelBlockEntity::gold)
     );
 
     public static final RegistryObject<Block> DIAMOND_BARREL = REGISTER.register(
-            "diamond_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR),
+            "diamond_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR)
+                    .requiresCorrectToolForDrops().strength(2.5F),
                     "diamond", MetalBarrelBlockEntity::diamond)
     );
 
     public static final RegistryObject<Block> OBSIDIAN_BARREL = REGISTER.register(
-            "obsidian_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR),
+            "obsidian_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR)
+                    .requiresCorrectToolForDrops().strength(2.5F),
                     "obsidian", MetalBarrelBlockEntity::obsidian)
     );
 
     public static final RegistryObject<Block> NETHERITE_BARREL = REGISTER.register(
-            "netherite_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR),
+            "netherite_barrel", () -> new MetalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR)
+                    .requiresCorrectToolForDrops().strength(2.5F),
                     "netherite", MetalBarrelBlockEntity::netherite)
     );
 
     public static final RegistryObject<Block> CRYSTAL_BARREL = REGISTER.register(
-            "crystal_barrel", () -> new CrystalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR),
+            "crystal_barrel", () -> new CrystalBarrelBlock(BlockBehaviour.Properties.of(Material.AIR)
+                    .requiresCorrectToolForDrops().strength(2.5F),
                     "crystal", MetalBarrelBlockEntity::crystal)
     );
 }

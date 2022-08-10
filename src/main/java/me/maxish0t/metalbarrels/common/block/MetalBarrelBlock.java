@@ -9,6 +9,8 @@ import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,8 +30,7 @@ public class MetalBarrelBlock extends BarrelBlock {
   protected final String barrelName;
   private final BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier;
 
-  public MetalBarrelBlock(Properties properties, String barrelName,
-                          BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
+  public MetalBarrelBlock(Properties properties, String barrelName, BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
     super(properties);
     this.barrelName = barrelName;
     this.blockEntitySupplier = blockEntitySupplier;
@@ -38,8 +39,7 @@ public class MetalBarrelBlock extends BarrelBlock {
   }
 
   @Override
-  public void onRemove(BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos,
-                       BlockState newState, boolean isMoving) {
+  public void onRemove(BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, BlockState newState, boolean isMoving) {
     if (state.getBlock() != newState.getBlock()) {
       BlockEntity tileentity = worldIn.getBlockEntity(pos);
       if (tileentity instanceof MetalBarrelBlockEntity) {
@@ -80,19 +80,6 @@ public class MetalBarrelBlock extends BarrelBlock {
   @Override
   public BlockEntity newBlockEntity(@NotNull BlockPos state, @NotNull BlockState blockState) {
     return blockEntitySupplier.create(state, blockState);
-    /**
-    return switch (barrelName) {
-      case "copper" -> MetalBarrelBlockEntity.copper(state, blockState);
-      case "iron" -> MetalBarrelBlockEntity.iron(state, blockState);
-      case "silver" -> MetalBarrelBlockEntity.silver(state, blockState);
-      case "gold" -> MetalBarrelBlockEntity.gold(state, blockState);
-      case "diamond" -> MetalBarrelBlockEntity.diamond(state, blockState);
-      case "obsidian" -> MetalBarrelBlockEntity.obsidian(state, blockState);
-      case "netherite" -> MetalBarrelBlockEntity.netherite(state, blockState);
-      case "crystal" -> MetalBarrelBlockEntity.crystal(state, blockState);
-      default -> null;
-    };
-     **/
   }
 
   @Override
@@ -108,13 +95,17 @@ public class MetalBarrelBlock extends BarrelBlock {
   }
 
   @Override
-  public void setPlacedBy(@NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState state,
-                          @Nullable LivingEntity placer, ItemStack stack) {
+  public void setPlacedBy(@NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
     if (stack.hasCustomHoverName()) {
       BlockEntity tileentity = worldIn.getBlockEntity(pos);
       if (tileentity instanceof MetalBarrelBlockEntity) {
         ((MetalBarrelBlockEntity)tileentity).setCustomName(stack.getDisplayName());
       }
     }
+  }
+
+  @Override
+  public boolean canDropFromExplosion(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
+    return true;
   }
 }
