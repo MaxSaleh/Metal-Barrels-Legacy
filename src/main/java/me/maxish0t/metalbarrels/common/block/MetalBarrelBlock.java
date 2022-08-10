@@ -1,6 +1,5 @@
 package me.maxish0t.metalbarrels.common.block;
 
-import me.maxish0t.metalbarrels.common.init.ModBlocks;
 import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -34,8 +33,6 @@ public class MetalBarrelBlock extends BarrelBlock {
     super(properties);
     this.barrelName = barrelName;
     this.blockEntitySupplier = blockEntitySupplier;
-
-    ModBlocks.MOD_BLOCKS.add(this);
   }
 
   @Override

@@ -6,7 +6,6 @@ import me.maxish0t.metalbarrels.common.item.UpgradeInfo;
 import me.maxish0t.metalbarrels.util.ModTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -55,23 +54,6 @@ public class ModItems {
     public static final RegistryObject<BlockItem> CRYSTAL_BARREL = REGISTER.register(
             "crystal_barrel", () -> new BlockItem(ModBlocks.CRYSTAL_BARREL.get(), new Item.Properties().tab(ModTabs.tab))
     );
-
-    /**
-     * Mod Items.
-     */
-
-    public static void registerItems() {
-        for (Block block : ModBlocks.MOD_BLOCKS) {
-            Item.Properties properties = new Item.Properties().tab(ModTabs.tab);
-
-            if (block == ModBlocks.NETHERITE_BARREL.get()) {
-                properties.fireResistant(); // TODO -> isBurnable
-            }
-
-            Item item = new BlockItem(block, properties);
-            REGISTER.register(block.getName().toString(), () -> item);
-        }
-    }
 
     /**
      * Wood to X.
