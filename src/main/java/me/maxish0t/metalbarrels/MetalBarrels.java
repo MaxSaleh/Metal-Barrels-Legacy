@@ -1,10 +1,16 @@
 package me.maxish0t.metalbarrels;
 
+import me.maxish0t.metalbarrels.client.render.CrystalBarrelRender;
+import me.maxish0t.metalbarrels.common.init.ModBlockEntities;
+import me.maxish0t.metalbarrels.common.init.ModBlocks;
 import me.maxish0t.metalbarrels.common.init.ModMenuTypes;
 import me.maxish0t.metalbarrels.common.init.ModRegistries;
 import me.maxish0t.metalbarrels.common.item.BarrelUpgradeItem;
 import me.maxish0t.metalbarrels.client.screens.MetalBarrelScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -33,6 +39,7 @@ public class MetalBarrels {
     BarrelUpgradeItem.IRON_CHESTS_LOADED = ModList.get().isLoaded("ironchest");
   }
 
+  @OnlyIn(Dist.CLIENT)
   private void doClientStuff(final FMLClientSetupEvent event) {
     MenuScreens.register(ModMenuTypes.COPPER_CONTAINER.get(), MetalBarrelScreen::copper);
     MenuScreens.register(ModMenuTypes.IRON_CONTAINER.get(), MetalBarrelScreen::iron);
@@ -42,6 +49,8 @@ public class MetalBarrels {
     MenuScreens.register(ModMenuTypes.OBSIDIAN_CONTAINER.get(), MetalBarrelScreen::obsidian);
     MenuScreens.register(ModMenuTypes.NETHERITE_CONTAINER.get(), MetalBarrelScreen::netherite);
     MenuScreens.register(ModMenuTypes.CRYSTAL_CONTAINER.get(), MetalBarrelScreen::crystal);
+
+    BlockEntityRenderers.register(ModBlockEntities.CRYSTAL_BARREL.get(), CrystalBarrelRender::new);
   }
 
 }
