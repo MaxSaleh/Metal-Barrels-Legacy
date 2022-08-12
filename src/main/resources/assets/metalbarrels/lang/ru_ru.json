@@ -48,5 +48,15 @@
   "tooltip.metalbarrels.ironchest": "Также можно улучшить блоки IronChest!",
 
   "metalbarrels.upgrade_successful": "улучшение успешно завершено",
-  "metalbarrels.in_use": "Barrel is in Use"
+
+  "metalbarrels.in_use": "Бочка используется",
+
+  "item.metalbarrels.barrel_move": "Переместить бочку",
+
+  "metalbarrels.player_message.successful": "Удачно сохранен ствол.",
+  "metalbarrels.player_message.sorry": "Извините, здесь уже хранится бочка!",
+  "metalbarrels.player_message.sorry_metal": "Извините, этот предмет работает только с металлическими бочками!",
+  "metalbarrels.player_message.placed": "Поместил бочку в этом месте!",
+  "metalbarrels.player_message.tooltip_no_barrel": "Не держит ствол",
+  "metalbarrels.player_message.tooltip_with_barrel": "проведение "
 }

@@ -47,5 +47,14 @@
   "tooltip.metalbarrels.ironchest": "Can also upgrade Iron Chest blocks!",
 
   "metalbarrels.upgrade_successful": "Upgrade Successful",
-  "metalbarrels.in_use": "Barrel is in Use"
+  "metalbarrels.in_use": "Barrel is in Use",
+
+  "item.metalbarrels.barrel_move": "Move Barrel",
+
+  "metalbarrels.player_message.successful": "Successfully stored the barrel.",
+  "metalbarrels.player_message.sorry": "Sorry there is already a barrel stored in this!",
+  "metalbarrels.player_message.sorry_metal": "Sorry this item only works on metal barrels!",
+  "metalbarrels.player_message.placed": "Placed the barrel in this location!",
+  "metalbarrels.player_message.tooltip_no_barrel": "Holding no barrel",
+  "metalbarrels.player_message.tooltip_with_barrel": "Holding a "
 }

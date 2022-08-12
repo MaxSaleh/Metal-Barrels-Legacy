@@ -2,10 +2,9 @@ package me.maxish0t.metalbarrels;
 
 import me.maxish0t.metalbarrels.client.render.CrystalBarrelRender;
 import me.maxish0t.metalbarrels.common.init.ModBlockEntities;
-import me.maxish0t.metalbarrels.common.init.ModBlocks;
 import me.maxish0t.metalbarrels.common.init.ModMenuTypes;
 import me.maxish0t.metalbarrels.common.init.ModRegistries;
-import me.maxish0t.metalbarrels.common.item.BarrelUpgradeItem;
+import me.maxish0t.metalbarrels.common.item.upgrade.BarrelUpgradeItem;
 import me.maxish0t.metalbarrels.client.screens.MetalBarrelScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;

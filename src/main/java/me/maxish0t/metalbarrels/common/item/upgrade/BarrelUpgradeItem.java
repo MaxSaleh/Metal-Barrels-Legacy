@@ -1,4 +1,4 @@
-package me.maxish0t.metalbarrels.common.item;
+package me.maxish0t.metalbarrels.common.item.upgrade;
 
 import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import net.minecraft.ChatFormatting;
@@ -26,12 +26,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.IntStream;
 

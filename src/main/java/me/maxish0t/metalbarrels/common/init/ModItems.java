@@ -1,8 +1,9 @@
 package me.maxish0t.metalbarrels.common.init;
 
 import me.maxish0t.metalbarrels.MetalBarrels;
-import me.maxish0t.metalbarrels.common.item.BarrelUpgradeItem;
-import me.maxish0t.metalbarrels.common.item.UpgradeInfo;
+import me.maxish0t.metalbarrels.common.item.extra.BarrelMoveItem;
+import me.maxish0t.metalbarrels.common.item.upgrade.BarrelUpgradeItem;
+import me.maxish0t.metalbarrels.common.item.upgrade.UpgradeInfo;
 import me.maxish0t.metalbarrels.util.ModTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -273,5 +274,13 @@ public class ModItems {
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.DIAMOND_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.CRYSTAL_BARREL.get()))
             ).add(ModTags.Blocks.DIAMOND_CHESTS, ModBlocks.CRYSTAL_BARREL.get(), MetalBarrels.MODID))
+    );
+
+    /**
+     * Extra Items.
+     */
+
+    public static final RegistryObject<BarrelMoveItem> BARREL_MOVE = REGISTER.register(
+            "barrel_move", BarrelMoveItem::new
     );
 }

@@ -1,6 +1,7 @@
 package me.maxish0t.metalbarrels.common.block;
 
 import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
+import me.maxish0t.metalbarrels.common.item.extra.BarrelMoveItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
@@ -40,8 +41,10 @@ public class MetalBarrelBlock extends BarrelBlock {
     if (state.getBlock() != newState.getBlock()) {
       BlockEntity tileentity = worldIn.getBlockEntity(pos);
       if (tileentity instanceof MetalBarrelBlockEntity) {
-        dropItems((MetalBarrelBlockEntity)tileentity,worldIn, pos);
-        worldIn.updateNeighbourForOutputSignal(pos, this);
+        if (!BarrelMoveItem.hasBarrel) {
+          dropItems((MetalBarrelBlockEntity)tileentity,worldIn, pos);
+          worldIn.updateNeighbourForOutputSignal(pos, this);
+        }
       }
       super.onRemove(state, worldIn, pos, newState, isMoving);
     }
