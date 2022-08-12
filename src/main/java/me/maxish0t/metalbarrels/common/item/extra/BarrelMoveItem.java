@@ -6,7 +6,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Pose;
@@ -93,9 +92,9 @@ public class BarrelMoveItem extends Item {
 
             Direction direction = player.getDirection();
             switch (direction) {
-                case NORTH -> level.setBlock(newPos, barrelBlock.defaultBlockState().rotate(Rotation.CLOCKWISE_180), 2);
-                case WEST -> level.setBlock(newPos, barrelBlock.defaultBlockState().rotate(Rotation.CLOCKWISE_90), 2);
-                case EAST -> level.setBlock(newPos, barrelBlock.defaultBlockState().rotate(Rotation.COUNTERCLOCKWISE_90), 2);
+                case NORTH -> level.setBlock(newPos, barrelBlock.defaultBlockState().rotate(level, newPos, Rotation.CLOCKWISE_180), 2);
+                case WEST -> level.setBlock(newPos, barrelBlock.defaultBlockState().rotate(level, newPos, Rotation.CLOCKWISE_90), 2);
+                case EAST -> level.setBlock(newPos, barrelBlock.defaultBlockState().rotate(level, newPos, Rotation.COUNTERCLOCKWISE_90), 2);
                 case SOUTH -> level.setBlock(newPos, barrelBlock.defaultBlockState().rotate(level, newPos, Rotation.NONE), 2);
             }
 
