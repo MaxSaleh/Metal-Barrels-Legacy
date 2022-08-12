@@ -48,7 +48,11 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
     } else if (!isWide) {
       blit(stack,i, j, 0, 0,getBlitOffset(), this.imageWidth, this.imageHeight,256,512);
     } else {
-      blit(stack,i, j, 0, 0,getBlitOffset(), this.imageWidth, this.imageHeight,512,512);
+      if (texture.getPath().equals("textures/gui/container/netherite.png")) {
+        blit(stack,i, j, 0, 0,getBlitOffset(), this.imageWidth, this.imageHeight,512, 512);
+      } else {
+        blit(stack,i, j, 0, 0,getBlitOffset(), this.imageWidth, this.imageHeight,256, 512);
+      }
     }
 
     RenderSystem.enableBlend();
@@ -77,23 +81,23 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
   }
 
   public static @NotNull MetalBarrelScreen gold(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
-    return new MetalBarrelScreen(barrelContainer,playerInventory,component,GOLD,176,276);
+    return new MetalBarrelScreen(barrelContainer,playerInventory,component,GOLD,193,258);
   }
 
   public static @NotNull MetalBarrelScreen diamond(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
-    return new MetalBarrelScreen(barrelContainer, playerInventory, component, DIAMOND,230, 276);
+    return new MetalBarrelScreen(barrelContainer, playerInventory, component, DIAMOND,250, 258);
   }
 
   public static @NotNull MetalBarrelScreen obsidian(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
-    return new MetalBarrelScreen(barrelContainer,playerInventory,component,DIAMOND,230,276);
+    return new MetalBarrelScreen(barrelContainer,playerInventory,component,DIAMOND,250,258);
   }
 
   public static @NotNull MetalBarrelScreen netherite(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
-    return new MetalBarrelScreen(barrelContainer,playerInventory,component,NETHERITE,284,276);
+    return new MetalBarrelScreen(barrelContainer,playerInventory,component,NETHERITE,300,258);
   }
 
   public static @NotNull MetalBarrelScreen crystal(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {
-    return new MetalBarrelScreen(barrelContainer,playerInventory,component,DIAMOND,230,276);
+    return new MetalBarrelScreen(barrelContainer,playerInventory,component,DIAMOND,250,258);
   }
 
 }

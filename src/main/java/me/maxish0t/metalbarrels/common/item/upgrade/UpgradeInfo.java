@@ -1,4 +1,4 @@
-package me.maxish0t.metalbarrels.common.item;
+package me.maxish0t.metalbarrels.common.item.upgrade;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
