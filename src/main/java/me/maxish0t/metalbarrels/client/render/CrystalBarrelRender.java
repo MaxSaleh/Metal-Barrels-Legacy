@@ -13,9 +13,12 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.stream.IntStream;
+
+import static net.minecraft.world.Containers.dropItemStack;
 
 @OnlyIn(Dist.CLIENT)
 public class CrystalBarrelRender implements BlockEntityRenderer<MetalBarrelBlockEntity> {
@@ -26,10 +29,10 @@ public class CrystalBarrelRender implements BlockEntityRenderer<MetalBarrelBlock
     public void render(@NotNull MetalBarrelBlockEntity blockEntity, float partialTicks, @NotNull PoseStack poseStack,
                        @NotNull MultiBufferSource bufferSource, int combinedLightIn, int combinedOverlayIn) {
 
-        //for (int i = 0; i < 12; i++) {
-            //renderItem(poseStack, bufferSource, blockEntity.handler.getStackInSlot(i), // TODO
-                    //new Vector3f(0.2F, 0.45F, 0.3F), 0.2F, 0F, combinedLightIn);
-        //}
+        //IntStream.range(0, 12).mapToObj(blockEntity.handler::getStackInSlot)
+                //.filter(stack -> !stack.isEmpty()).forEach(stack ->
+                        //renderItem(poseStack, bufferSource, stack,
+                                //new Vector3f(0.2F, 0.45F, 0.3F), 0.2F, 0F, combinedLightIn)); // TODO
     }
 
     public static void renderItem(PoseStack matrices, MultiBufferSource buffer, ItemStack item, Vector3f vector3f,
