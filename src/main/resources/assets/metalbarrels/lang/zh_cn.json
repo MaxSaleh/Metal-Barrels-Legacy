@@ -47,5 +47,14 @@
   "tooltip.metalbarrels.ironchest": "也可升级《更多箱子》里的箱子！",
 
   "metalbarrels.upgrade_successful": "升级成功",
-  "metalbarrels.in_use": "储物桶被使用中"
+  "metalbarrels.in_use": "储物桶被使用中",
+
+  "item.metalbarrels.barrel_move": "移动桶",
+
+  "metalbarrels.player_message.successful": "成功存放桶。",
+  "metalbarrels.player_message.sorry": "抱歉，里面已经有一个桶了！",
+  "metalbarrels.player_message.sorry_metal": "抱歉，此商品仅适用于金属桶！",
+  "metalbarrels.player_message.placed": "把枪管放在这个位置！",
+  "metalbarrels.player_message.tooltip_no_barrel": "持无桶",
+  "metalbarrels.player_message.tooltip_with_barrel": "拿着一个 "
 }

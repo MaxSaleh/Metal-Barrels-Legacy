@@ -151,7 +151,7 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   }
 
   protected Component getDefaultName() {
-    return Component.translatable(getBlockState().getBlock().getDescriptionId());
+    return Component.literal(getBlockState().getBlock().getDescriptionId());
   }
 
   public void setCustomName(Component name) {
