@@ -16,7 +16,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 
 
-version = '1.18.2-0.3'
+version = '1.18.2-0.4'
 group = 'me.maxish0t.metalbarrels' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'MetalBarrels'
 
