@@ -4,7 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version '5.1.+'
 }
 
-version = "1.19-0.3"
+version = "1.19-0.4"
 group = 'me.maxish0t.metalbarrels'
 archivesBaseName = 'MetalBarrels'
 

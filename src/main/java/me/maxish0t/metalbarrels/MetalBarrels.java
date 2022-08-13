@@ -38,7 +38,6 @@ public class MetalBarrels {
     BarrelUpgradeItem.IRON_CHESTS_LOADED = ModList.get().isLoaded("ironchest");
   }
 
-  @OnlyIn(Dist.CLIENT)
   private void doClientStuff(final FMLClientSetupEvent event) {
     MenuScreens.register(ModMenuTypes.COPPER_CONTAINER.get(), MetalBarrelScreen::copper);
     MenuScreens.register(ModMenuTypes.IRON_CONTAINER.get(), MetalBarrelScreen::iron);
