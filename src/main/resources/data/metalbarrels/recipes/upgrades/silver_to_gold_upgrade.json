@@ -5,7 +5,7 @@
     ],
     "key":{
         "g":{"tag":"forge:ingots/gold"},
-        "s":{"tag":"forge:ingots/silver"}
+        "s":{"item":"minecraft:lapis_lazuli"}
     },
     "result":{"item":"metalbarrels:silver_to_gold"}
 }

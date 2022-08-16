@@ -1,14 +1,20 @@
 package me.maxish0t.metalbarrels.common.block;
 
-import me.maxish0t.metalbarrels.common.init.ModBlocks;
 import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
+import me.maxish0t.metalbarrels.common.item.extra.BarrelMoveItem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -19,32 +25,36 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static net.minecraft.world.Containers.dropItemStack;
 
 public class MetalBarrelBlock extends BarrelBlock {
 
-  protected final String barrelName;
   private final BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier;
+  protected final String barrelName;
+  private final int slotWidth;
+  private final int slotHeight;
 
   public MetalBarrelBlock(Properties properties, String barrelName,
-                          BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
+                          BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier, int slotWidth, int slotHeight) {
     super(properties);
     this.barrelName = barrelName;
     this.blockEntitySupplier = blockEntitySupplier;
-
-    ModBlocks.MOD_BLOCKS.add(this);
+    this.slotWidth = slotWidth;
+    this.slotHeight = slotHeight;
   }
 
   @Override
-  public void onRemove(BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos,
-                       BlockState newState, boolean isMoving) {
+  public void onRemove(BlockState state, @NotNull Level worldIn, @NotNull BlockPos pos, BlockState newState, boolean isMoving) {
     if (state.getBlock() != newState.getBlock()) {
       BlockEntity tileentity = worldIn.getBlockEntity(pos);
       if (tileentity instanceof MetalBarrelBlockEntity) {
-        dropItems((MetalBarrelBlockEntity)tileentity,worldIn, pos);
-        worldIn.updateNeighbourForOutputSignal(pos, this);
+        if (!BarrelMoveItem.hasBarrel) {
+          dropItems((MetalBarrelBlockEntity)tileentity,worldIn, pos);
+          worldIn.updateNeighbourForOutputSignal(pos, this);
+        }
       }
       super.onRemove(state, worldIn, pos, newState, isMoving);
     }
@@ -80,19 +90,6 @@ public class MetalBarrelBlock extends BarrelBlock {
   @Override
   public BlockEntity newBlockEntity(@NotNull BlockPos state, @NotNull BlockState blockState) {
     return blockEntitySupplier.create(state, blockState);
-    /**
-    return switch (barrelName) {
-      case "copper" -> MetalBarrelBlockEntity.copper(state, blockState);
-      case "iron" -> MetalBarrelBlockEntity.iron(state, blockState);
-      case "silver" -> MetalBarrelBlockEntity.silver(state, blockState);
-      case "gold" -> MetalBarrelBlockEntity.gold(state, blockState);
-      case "diamond" -> MetalBarrelBlockEntity.diamond(state, blockState);
-      case "obsidian" -> MetalBarrelBlockEntity.obsidian(state, blockState);
-      case "netherite" -> MetalBarrelBlockEntity.netherite(state, blockState);
-      case "crystal" -> MetalBarrelBlockEntity.crystal(state, blockState);
-      default -> null;
-    };
-     **/
   }
 
   @Override
@@ -108,13 +105,24 @@ public class MetalBarrelBlock extends BarrelBlock {
   }
 
   @Override
-  public void setPlacedBy(@NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState state,
-                          @Nullable LivingEntity placer, ItemStack stack) {
+  public void setPlacedBy(@NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
     if (stack.hasCustomHoverName()) {
       BlockEntity tileentity = worldIn.getBlockEntity(pos);
       if (tileentity instanceof MetalBarrelBlockEntity) {
         ((MetalBarrelBlockEntity)tileentity).setCustomName(stack.getDisplayName());
       }
     }
+  }
+
+  @Override
+  public boolean canDropFromExplosion(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
+    return true;
+  }
+
+  @Override
+  public void appendHoverText(@NotNull ItemStack p_49816_, @Nullable BlockGetter p_49817_, @NotNull List<Component> list, @NotNull TooltipFlag p_49819_) {
+    list.add(new TextComponent(ChatFormatting.BLUE + "Slot Width: " + ChatFormatting.GRAY + slotWidth));
+    list.add(new TextComponent(ChatFormatting.BLUE + "Slot Height: " + ChatFormatting.GRAY + slotHeight));
+    list.add(new TextComponent(ChatFormatting.BLUE + "Slot Count: " + ChatFormatting.GRAY + (slotWidth * slotHeight)));
   }
 }

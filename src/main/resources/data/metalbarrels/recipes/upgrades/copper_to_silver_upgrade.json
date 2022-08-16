@@ -7,8 +7,8 @@
 
     ],
     "key":{
-        "s":{"tag":"forge:ingots/silver"},
-        "c":{"tag":"forge:ingots/copper"}
+        "s":{"item":"minecraft:lapis_lazuli"},
+        "c":{"item":"minecraft:copper_ingot"}
     },
     "result":{"item":"metalbarrels:copper_to_silver"}
 }

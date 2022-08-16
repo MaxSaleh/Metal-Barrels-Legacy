@@ -4,7 +4,7 @@
         "sis"
     ],
     "key":{
-        "s":{"tag":"forge:ingots/silver"},
+        "s":{"item":"minecraft:lapis_lazuli"},
         "i":{"tag":"forge:ingots/iron"}
     },
     "result":{"item":"metalbarrels:iron_to_silver"}

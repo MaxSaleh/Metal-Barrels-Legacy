@@ -13,8 +13,9 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 public class CrystalBarrelBlock extends MetalBarrelBlock {
 
-    public CrystalBarrelBlock(Properties properties, String barrelName, BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
-        super(properties.noOcclusion(), barrelName, blockEntitySupplier);
+    public CrystalBarrelBlock(Properties properties, String barrelName,
+                              BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier, int slotWidth, int slotHeight) {
+        super(properties.noOcclusion(), barrelName, blockEntitySupplier, slotWidth, slotHeight);
     }
 
     @Override

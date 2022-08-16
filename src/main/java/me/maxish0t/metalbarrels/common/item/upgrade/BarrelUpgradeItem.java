@@ -1,4 +1,4 @@
-package me.maxish0t.metalbarrels.common.item;
+package me.maxish0t.metalbarrels.common.item.upgrade;
 
 import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import net.minecraft.ChatFormatting;
@@ -26,13 +26,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -44,12 +41,6 @@ public class BarrelUpgradeItem extends Item {
   public BarrelUpgradeItem(Properties properties, UpgradeInfo info) {
     super(properties);
     this.upgradeInfo = info;
-  }
-
-  public static final Method method;
-
-  static {
-    method = ObfuscationReflectionHelper.findMethod(ChestBlockEntity.class,"getItems"); // getItems
   }
 
   private static final Component s = new TranslatableComponent("tooltip.metalbarrels.ironchest")
@@ -74,7 +65,7 @@ public class BarrelUpgradeItem extends Item {
     ItemStack heldStack = context.getItemInHand();
     BlockState state = world.getBlockState(pos);
 
-    if (player == null || !upgradeInfo.canUpgrade(world.getBlockState(pos).getBlock())) {
+    if (player == null || !upgradeInfo.canUpgrade(world.getBlockState(pos).getBlock().defaultBlockState())) {
       return InteractionResult.FAIL;
     }
     if (world.isClientSide || player.getPose() != Pose.CROUCHING)
@@ -112,14 +103,14 @@ public class BarrelUpgradeItem extends Item {
     }
 
     if (oldBarrel instanceof ChestBlockEntity) {
-      try {
-        oldBarrelContents.addAll((Collection<? extends ItemStack>) method.invoke(oldBarrel));
-      } catch (IllegalAccessException | InvocationTargetException e) {
-        e.printStackTrace();
+      for (int i = 0; i < 27; i++) {
+        oldBarrelContents.add(((ChestBlockEntity) oldBarrel).getItem(i));
       }
-    } else oldBarrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            .ifPresent((itemHandler) -> IntStream.range(0, itemHandler.getSlots())
-                    .mapToObj(itemHandler::getStackInSlot).forEach(oldBarrelContents::add));
+    } else {
+      oldBarrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+              .ifPresent((itemHandler) -> IntStream.range(0, itemHandler.getSlots())
+                      .mapToObj(itemHandler::getStackInSlot).forEach(oldBarrelContents::add));
+    }
     oldBarrel.setRemoved();
 
     Block newBlock = upgradeInfo.getBlock(state.getBlock());
