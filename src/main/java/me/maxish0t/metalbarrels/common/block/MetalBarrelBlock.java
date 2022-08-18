@@ -104,11 +104,16 @@ public class MetalBarrelBlock extends BarrelBlock {
   }
 
   @Override
-  public void setPlacedBy(@NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+  public void setPlacedBy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
     if (stack.hasCustomHoverName()) {
-      BlockEntity tileentity = worldIn.getBlockEntity(pos);
-      if (tileentity instanceof MetalBarrelBlockEntity) {
-        ((MetalBarrelBlockEntity)tileentity).setCustomName(stack.getDisplayName());
+      BlockEntity blockEntity = level.getBlockEntity(pos);
+      if (blockEntity instanceof MetalBarrelBlockEntity) {
+        ((MetalBarrelBlockEntity) blockEntity).setCustomName(stack.getDisplayName());
+
+        if (placer instanceof Player player) {
+          ((MetalBarrelBlockEntity) blockEntity).setOwner(Component.literal(player.getUUID().toString()));
+          level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
+        }
       }
     }
   }

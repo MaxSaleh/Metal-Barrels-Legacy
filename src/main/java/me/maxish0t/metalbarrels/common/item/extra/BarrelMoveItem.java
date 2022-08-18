@@ -49,23 +49,28 @@ public class BarrelMoveItem extends Item {
 
         if (level.getBlockState(pos).getBlock() instanceof BarrelBlock) {
             if (!hasBarrel) {
-                hasBarrel = true;
                 barrelBlock = (BarrelBlock) level.getBlockState(pos).getBlock();
                 MetalBarrelBlockEntity metalBarrelBlockEntity = (MetalBarrelBlockEntity) level.getBlockEntity(pos);
 
                 if (metalBarrelBlockEntity != null) {
-                    ItemStackHandler stackHandler = metalBarrelBlockEntity.handler;
-                    for (int i = 0; i < stackHandler.getSlots(); i++) {
-                        if (!(stackHandler.getStackInSlot(i).getItem() instanceof AirItem)) {
-                            storedItems.put(stackHandler.getStackInSlot(i), i);
+                    if (metalBarrelBlockEntity.getOwner().getString().equals(player.getUUID().toString())) {
+                        ItemStackHandler stackHandler = metalBarrelBlockEntity.handler;
+                        for (int i = 0; i < stackHandler.getSlots(); i++) {
+                            if (!(stackHandler.getStackInSlot(i).getItem() instanceof AirItem)) {
+                                storedItems.put(stackHandler.getStackInSlot(i), i);
+                            }
                         }
+
+                        level.removeBlock(pos, false);
+                        level.removeBlockEntity(pos);
+                        player.sendSystemMessage(Component.translatable("metalbarrels.player_message.successful")
+                                .withStyle(ChatFormatting.GREEN));
+                        hasBarrel = true;
+                    } else {
+                        player.sendSystemMessage(Component.literal("Sorry you are not the owner of this barrel!") // TODO lang
+                                .withStyle(ChatFormatting.GREEN));
                     }
                 }
-
-                level.removeBlock(pos, false);
-                level.removeBlockEntity(pos);
-                player.sendSystemMessage(Component.translatable("metalbarrels.player_message.successful")
-                        .withStyle(ChatFormatting.GREEN));
             } else {
                 player.sendSystemMessage(Component.translatable("metalbarrels.player_message.sorry")
                         .withStyle(ChatFormatting.RED));

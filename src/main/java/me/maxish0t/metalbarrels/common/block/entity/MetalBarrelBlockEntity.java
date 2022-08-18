@@ -8,7 +8,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.MenuProvider;
@@ -28,12 +32,15 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider, Nameable {
 
   protected final int width;
   protected final int height;
   protected final PropertyDispatch.TriFunction<Integer, Inventory, ContainerLevelAccess, AbstractContainerMenu> containerFactory;
   protected Component customName;
+  protected Component ownerUUID;
   public final LazyOptional<IItemHandler> optional;
   public final ItemStackHandler handler;
   public int players = 0;
@@ -102,6 +109,8 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     tag.put("inv", compound);
     if (this.customName != null) {
       tag.putString("CustomName", Component.Serializer.toJson(this.customName));
+    } else if (this.ownerUUID != null) {
+      tag.putString("ownerUUID", Component.Serializer.toJson(this.ownerUUID));
     }
     super.saveAdditional(tag);
   }
@@ -110,10 +119,40 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   public void load(CompoundTag tag) {
     CompoundTag invTag = tag.getCompound("inv");
     handler.deserializeNBT(invTag);
+
     if (tag.contains("CustomName", 8)) {
       this.customName = Component.Serializer.fromJson(tag.getString("CustomName"));
+    } else if (tag.contains("ownerUUID", 8)) {
+      this.ownerUUID = Component.Serializer.fromJson(tag.getString("ownerUUID"));
     }
+
     super.load(tag);
+  }
+
+  @Nullable
+  @Override
+  public Packet<ClientGamePacketListener> getUpdatePacket() {
+    return ClientboundBlockEntityDataPacket.create(this);
+  }
+
+  @Override
+  public @NotNull CompoundTag getUpdateTag() {
+    CompoundTag compoundTag = super.getUpdateTag();
+    if (ownerUUID != null) {
+      compoundTag.putString("ownerUUID", this.ownerUUID.getString());
+    }
+    return compoundTag;
+  }
+
+  @Override
+  public void handleUpdateTag(CompoundTag tag) {
+    this.ownerUUID = Component.literal(tag.getString("ownerUUID"));
+    super.handleUpdateTag(tag);
+  }
+
+  @Override
+  public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+    super.onDataPacket(net, pkt);
   }
 
   @Nullable
@@ -135,12 +174,12 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   }
 
   @Override
-  public Component getName() {
+  public @NotNull Component getName() {
     return this.customName != null ? this.customName : this.getDefaultName();
   }
 
   @Override
-  public Component getDisplayName() {
+  public @NotNull Component getDisplayName() {
     return this.getName();
   }
 
@@ -156,6 +195,14 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
 
   public void setCustomName(Component name) {
     this.customName = name;
+  }
+
+  public Component getOwner() {
+    return this.ownerUUID;
+  }
+
+  public void setOwner(Component playerUUID) {
+    this.ownerUUID = playerUUID;
   }
 
   public void changeState(BlockState blockState, boolean p_213963_2_) {
