@@ -6,6 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
@@ -28,7 +29,7 @@ public class PlayerOverlay implements IGuiOverlay {
                         if (metalBarrelBlockEntity.getOwner() != null) {
                             String ownerName = metalBarrelBlockEntity.getOwner().getString();
                             minecraft.font.draw(poseStack, ChatFormatting.GREEN + "" + ChatFormatting.BOLD +
-                                    "Barrel Owner: " + ownerName, 5, 5, 0); // TODO LANG
+                                    Component.translatable("metalbarrels.player_overlay") + ownerName, 5, 5, 0);
                         }
                     }
                 }

@@ -67,7 +67,7 @@ public class BarrelMoveItem extends Item {
                                 .withStyle(ChatFormatting.GREEN));
                         hasBarrel = true;
                     } else {
-                        player.sendSystemMessage(Component.literal("Sorry you are not the owner of this barrel!") // TODO lang
+                        player.sendSystemMessage(Component.translatable("metalbarrels.player_message.not_owner")
                                 .withStyle(ChatFormatting.RED));
                     }
                 }

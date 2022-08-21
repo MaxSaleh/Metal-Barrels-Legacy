@@ -52,5 +52,8 @@
   "metalbarrels.player_message.sorry_metal": "Przepraszamy, ten przedmiot działa tylko na metalowych beczkach!",
   "metalbarrels.player_message.placed": "Umieściłem beczkę w tym miejscu!",
   "metalbarrels.player_message.tooltip_no_barrel": "Nie trzymam beczki",
-  "metalbarrels.player_message.tooltip_with_barrel": "Trzymanie "
+  "metalbarrels.player_message.tooltip_with_barrel": "Trzymanie ",
+
+  "metalbarrels.player_overlay": "Właściciel beczki: ",
+  "metalbarrels.player_message.not_owner": "Przepraszamy, że nie jesteś właścicielem tej beczki!"
 }
