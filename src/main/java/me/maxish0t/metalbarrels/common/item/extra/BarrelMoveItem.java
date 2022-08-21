@@ -110,6 +110,7 @@ public class BarrelMoveItem extends Item {
                 for (ItemStack itemStack : storedItems.keySet()) {
                     metalBarrelBlockEntity.handler.setStackInSlot(storedItems.get(itemStack), itemStack);
                 }
+                metalBarrelBlockEntity.setOwner(Component.literal(player.getDisplayName().getString()));
             }
 
             storedItems.clear();
