@@ -40,7 +40,7 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   protected final int height;
   protected final PropertyDispatch.TriFunction<Integer, Inventory, ContainerLevelAccess, AbstractContainerMenu> containerFactory;
   protected Component customName;
-  protected Component ownerUUID;
+  protected Component ownerName;
   public final LazyOptional<IItemHandler> optional;
   public final ItemStackHandler handler;
   public int players = 0;
@@ -109,8 +109,9 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     tag.put("inv", compound);
     if (this.customName != null) {
       tag.putString("CustomName", Component.Serializer.toJson(this.customName));
-    } else if (this.ownerUUID != null) {
-      tag.putString("ownerUUID", Component.Serializer.toJson(this.ownerUUID));
+    }
+    if (ownerName != null) {
+      tag.putString("ownerName", this.ownerName.getString());
     }
     super.saveAdditional(tag);
   }
@@ -119,46 +120,52 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   public void load(CompoundTag tag) {
     CompoundTag invTag = tag.getCompound("inv");
     handler.deserializeNBT(invTag);
-
     if (tag.contains("CustomName", 8)) {
       this.customName = Component.Serializer.fromJson(tag.getString("CustomName"));
-    } else if (tag.contains("ownerUUID", 8)) {
-      this.ownerUUID = Component.Serializer.fromJson(tag.getString("ownerUUID"));
     }
-
+    if (tag.contains("ownerName")) {
+      this.ownerName = Component.literal(tag.getString("ownerName"));
+    }
     super.load(tag);
   }
 
   @Nullable
   @Override
   public Packet<ClientGamePacketListener> getUpdatePacket() {
-    return ClientboundBlockEntityDataPacket.create(this);
+    return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
   }
+
 
   @Override
   public @NotNull CompoundTag getUpdateTag() {
     CompoundTag compoundTag = super.getUpdateTag();
-    if (ownerUUID != null) {
-      compoundTag.putString("ownerUUID", this.ownerUUID.getString());
+    if (ownerName != null) {
+      compoundTag.putString("ownerName", this.ownerName.getString());
     }
     return compoundTag;
   }
 
   @Override
   public void handleUpdateTag(CompoundTag tag) {
-    this.ownerUUID = Component.literal(tag.getString("ownerUUID"));
+    this.ownerName = Component.literal(tag.getString("ownerName"));
     super.handleUpdateTag(tag);
   }
 
   @Override
   public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
     super.onDataPacket(net, pkt);
+    if (pkt.getTag() != null) {
+      handleUpdateTag(pkt.getTag());
+      load(pkt.getTag());
+    }
   }
 
   @Nullable
   @Override
   public AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory, @NotNull Player player) {
-    assert this.level != null;
+    if (this.level == null)
+      return null;
+
     return containerFactory.apply(id, inventory, ContainerLevelAccess.create(this.level, this.getBlockPos()));
   }
 
@@ -198,32 +205,32 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   }
 
   public Component getOwner() {
-    return this.ownerUUID;
+    return this.ownerName;
   }
 
   public void setOwner(Component playerUUID) {
-    this.ownerUUID = playerUUID;
+    this.ownerName = playerUUID;
   }
 
-  public void changeState(BlockState blockState, boolean p_213963_2_) {
+  public void changeState(BlockState blockState, boolean face) {
     if (blockState.getBlock() instanceof MetalBarrelBlock) {
       assert this.level != null;
-      this.level.setBlock(this.getBlockPos(), blockState.setValue(BarrelBlock.OPEN, p_213963_2_), 3);
+      this.level.setBlock(this.getBlockPos(), blockState.setValue(BarrelBlock.OPEN, face), 3);
     }
-    //else MetalBarrels.logger.warn("Attempted to set invalid property of {}",p_213963_1_.toString());
   }
 
-  public void soundStuff(BlockState p_213965_1_, SoundEvent p_213965_2_) {
-    if (!(p_213965_1_.getBlock() instanceof MetalBarrelBlock)){
-      //MetalBarrels.logger.warn("Attempted to set invalid property of {}",p_213965_1_.toString());
+  public void soundStuff(BlockState blockState, SoundEvent soundEvent) {
+    if (!(blockState.getBlock() instanceof MetalBarrelBlock))
       return;
+
+    Vec3i vec3i = blockState.getValue(BarrelBlock.FACING).getNormal();
+    double x = this.getBlockPos().getX() + 0.5D + vec3i.getX() / 2.0D;
+    double y = this.getBlockPos().getY() + 0.5D + vec3i.getY() / 2.0D;
+    double z = this.getBlockPos().getZ() + 0.5D + vec3i.getZ() / 2.0D;
+
+    if (level != null) {
+      this.level.playSound(null, x, y, z, soundEvent,
+              SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
     }
-    Vec3i lvt_3_1_ = p_213965_1_.getValue(BarrelBlock.FACING).getNormal();
-    double lvt_4_1_ = this.getBlockPos().getX() + 0.5D + lvt_3_1_.getX() / 2.0D;
-    double lvt_6_1_ = this.getBlockPos().getY() + 0.5D + lvt_3_1_.getY() / 2.0D;
-    double lvt_8_1_ = this.getBlockPos().getZ() + 0.5D + lvt_3_1_.getZ() / 2.0D;
-    assert this.level != null;
-    this.level.playSound(null, lvt_4_1_, lvt_6_1_, lvt_8_1_, p_213965_2_,
-            SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
   }
 }

@@ -53,7 +53,7 @@ public class BarrelMoveItem extends Item {
                 MetalBarrelBlockEntity metalBarrelBlockEntity = (MetalBarrelBlockEntity) level.getBlockEntity(pos);
 
                 if (metalBarrelBlockEntity != null) {
-                    if (metalBarrelBlockEntity.getOwner().getString().equals(player.getUUID().toString())) {
+                    if (metalBarrelBlockEntity.getOwner().getString().equals(player.getDisplayName().getString())) {
                         ItemStackHandler stackHandler = metalBarrelBlockEntity.handler;
                         for (int i = 0; i < stackHandler.getSlots(); i++) {
                             if (!(stackHandler.getStackInSlot(i).getItem() instanceof AirItem)) {
@@ -68,7 +68,7 @@ public class BarrelMoveItem extends Item {
                         hasBarrel = true;
                     } else {
                         player.sendSystemMessage(Component.literal("Sorry you are not the owner of this barrel!") // TODO lang
-                                .withStyle(ChatFormatting.GREEN));
+                                .withStyle(ChatFormatting.RED));
                     }
                 }
             } else {

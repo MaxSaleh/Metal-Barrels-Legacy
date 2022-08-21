@@ -4,7 +4,6 @@ import me.maxish0t.metalbarrels.MetalBarrels;
 import me.maxish0t.metalbarrels.common.item.extra.BarrelMoveItem;
 import me.maxish0t.metalbarrels.common.item.upgrade.BarrelUpgradeItem;
 import me.maxish0t.metalbarrels.common.item.upgrade.UpgradeInfo;
-import me.maxish0t.metalbarrels.util.ModTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
