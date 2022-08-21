@@ -56,5 +56,8 @@
   "metalbarrels.player_message.sorry_metal": "抱歉，此商品仅适用于金属桶！",
   "metalbarrels.player_message.placed": "把枪管放在这个位置！",
   "metalbarrels.player_message.tooltip_no_barrel": "持无桶",
-  "metalbarrels.player_message.tooltip_with_barrel": "拿着一个 "
+  "metalbarrels.player_message.tooltip_with_barrel": "拿着一个 ",
+
+  "metalbarrels.player_overlay": "桶主： ",
+  "metalbarrels.player_message.not_owner": "对不起，你不是这个桶的主人！"
 }

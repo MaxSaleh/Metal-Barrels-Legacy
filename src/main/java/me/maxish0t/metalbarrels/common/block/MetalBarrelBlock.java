@@ -52,6 +52,7 @@ public class MetalBarrelBlock extends BarrelBlock {
       BlockEntity tileentity = worldIn.getBlockEntity(pos);
       if (tileentity instanceof MetalBarrelBlockEntity) {
         if (!BarrelMoveItem.hasBarrel) {
+          System.out.println("WORKS!");
           dropItems((MetalBarrelBlockEntity)tileentity,worldIn, pos);
           worldIn.updateNeighbourForOutputSignal(pos, this);
         }
@@ -105,11 +106,18 @@ public class MetalBarrelBlock extends BarrelBlock {
   }
 
   @Override
-  public void setPlacedBy(@NotNull Level worldIn, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-    if (stack.hasCustomHoverName()) {
-      BlockEntity tileentity = worldIn.getBlockEntity(pos);
-      if (tileentity instanceof MetalBarrelBlockEntity) {
-        ((MetalBarrelBlockEntity)tileentity).setCustomName(stack.getDisplayName());
+  public void setPlacedBy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable LivingEntity placer, @NotNull ItemStack stack) {
+    if (!level.isClientSide) {
+      BlockEntity blockEntity = level.getBlockEntity(pos);
+      if (stack.hasCustomHoverName()) {
+        if (blockEntity instanceof MetalBarrelBlockEntity) {
+          ((MetalBarrelBlockEntity) blockEntity).setCustomName(stack.getDisplayName());
+        }
+      } else {
+        if (placer instanceof Player player && blockEntity != null) {
+          ((MetalBarrelBlockEntity) blockEntity).setOwner(new TextComponent(player.getDisplayName().getString()));
+          level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
+        }
       }
     }
   }

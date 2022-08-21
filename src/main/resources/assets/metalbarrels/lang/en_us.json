@@ -56,5 +56,8 @@
   "metalbarrels.player_message.sorry_metal": "Sorry this item only works on metal barrels!",
   "metalbarrels.player_message.placed": "Placed the barrel in this location!",
   "metalbarrels.player_message.tooltip_no_barrel": "Holding no barrel",
-  "metalbarrels.player_message.tooltip_with_barrel": "Holding a "
+  "metalbarrels.player_message.tooltip_with_barrel": "Holding a ",
+
+  "metalbarrels.player_overlay": "Barrel Owner: ",
+  "metalbarrels.player_message.not_owner": "Sorry you are not the owner of this barrel!"
 }

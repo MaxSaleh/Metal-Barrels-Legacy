@@ -8,8 +8,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.MenuProvider;
@@ -29,12 +33,15 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider, Nameable {
 
   protected final int width;
   protected final int height;
   protected final PropertyDispatch.TriFunction<Integer, Inventory, ContainerLevelAccess, AbstractContainerMenu> containerFactory;
   protected Component customName;
+  protected Component ownerName;
   public final LazyOptional<IItemHandler> optional;
   public final ItemStackHandler handler;
   public int players = 0;
@@ -104,6 +111,9 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     if (this.customName != null) {
       tag.putString("CustomName", Component.Serializer.toJson(this.customName));
     }
+    if (ownerName != null) {
+      tag.putString("ownerName", this.ownerName.getString());
+    }
     super.saveAdditional(tag);
   }
 
@@ -114,13 +124,49 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     if (tag.contains("CustomName", 8)) {
       this.customName = Component.Serializer.fromJson(tag.getString("CustomName"));
     }
+    if (tag.contains("ownerName")) {
+      this.ownerName = new TextComponent(tag.getString("ownerName"));
+    }
     super.load(tag);
   }
 
   @Nullable
   @Override
+  public Packet<ClientGamePacketListener> getUpdatePacket() {
+    return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
+  }
+
+
+  @Override
+  public @NotNull CompoundTag getUpdateTag() {
+    CompoundTag compoundTag = super.getUpdateTag();
+    if (ownerName != null) {
+      compoundTag.putString("ownerName", this.ownerName.getString());
+    }
+    return compoundTag;
+  }
+
+  @Override
+  public void handleUpdateTag(CompoundTag tag) {
+    this.ownerName = new TextComponent(tag.getString("ownerName"));
+    super.handleUpdateTag(tag);
+  }
+
+  @Override
+  public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+    super.onDataPacket(net, pkt);
+    if (pkt.getTag() != null) {
+      handleUpdateTag(pkt.getTag());
+      load(pkt.getTag());
+    }
+  }
+
+  @Nullable
+  @Override
   public AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory, @NotNull Player player) {
-    assert this.level != null;
+    if (this.level == null)
+      return null;
+
     return containerFactory.apply(id, inventory, ContainerLevelAccess.create(this.level, this.getBlockPos()));
   }
 
@@ -136,12 +182,12 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   }
 
   @Override
-  public Component getName() {
+  public @NotNull Component getName() {
     return this.customName != null ? this.customName : this.getDefaultName();
   }
 
   @Override
-  public Component getDisplayName() {
+  public @NotNull Component getDisplayName() {
     return this.getName();
   }
 
@@ -152,32 +198,40 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   }
 
   protected Component getDefaultName() {
-    return new TextComponent(getBlockState().getBlock().getDescriptionId());
+    return new TextComponent(getBlockState().getBlock().getName().getString());
   }
 
   public void setCustomName(Component name) {
     this.customName = name;
   }
 
-  public void changeState(BlockState blockState, boolean p_213963_2_) {
-    if (blockState.getBlock() instanceof MetalBarrelBlock) {
-      assert this.level != null;
-      this.level.setBlock(this.getBlockPos(), blockState.setValue(BarrelBlock.OPEN, p_213963_2_), 3);
-    }
-    //else MetalBarrels.logger.warn("Attempted to set invalid property of {}",p_213963_1_.toString());
+  public Component getOwner() {
+    return this.ownerName;
   }
 
-  public void soundStuff(BlockState p_213965_1_, SoundEvent p_213965_2_) {
-    if (!(p_213965_1_.getBlock() instanceof MetalBarrelBlock)){
-      //MetalBarrels.logger.warn("Attempted to set invalid property of {}",p_213965_1_.toString());
-      return;
+  public void setOwner(Component playerUUID) {
+    this.ownerName = playerUUID;
+  }
+
+  public void changeState(BlockState blockState, boolean face) {
+    if (blockState.getBlock() instanceof MetalBarrelBlock) {
+      assert this.level != null;
+      this.level.setBlock(this.getBlockPos(), blockState.setValue(BarrelBlock.OPEN, face), 3);
     }
-    Vec3i lvt_3_1_ = p_213965_1_.getValue(BarrelBlock.FACING).getNormal();
-    double lvt_4_1_ = this.getBlockPos().getX() + 0.5D + lvt_3_1_.getX() / 2.0D;
-    double lvt_6_1_ = this.getBlockPos().getY() + 0.5D + lvt_3_1_.getY() / 2.0D;
-    double lvt_8_1_ = this.getBlockPos().getZ() + 0.5D + lvt_3_1_.getZ() / 2.0D;
-    assert this.level != null;
-    this.level.playSound(null, lvt_4_1_, lvt_6_1_, lvt_8_1_, p_213965_2_,
-            SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
+  }
+
+  public void soundStuff(BlockState blockState, SoundEvent soundEvent) {
+    if (!(blockState.getBlock() instanceof MetalBarrelBlock))
+      return;
+
+    Vec3i vec3i = blockState.getValue(BarrelBlock.FACING).getNormal();
+    double x = this.getBlockPos().getX() + 0.5D + vec3i.getX() / 2.0D;
+    double y = this.getBlockPos().getY() + 0.5D + vec3i.getY() / 2.0D;
+    double z = this.getBlockPos().getZ() + 0.5D + vec3i.getZ() / 2.0D;
+
+    if (level != null) {
+      this.level.playSound(null, x, y, z, soundEvent,
+              SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
+    }
   }
 }

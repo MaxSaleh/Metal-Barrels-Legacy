@@ -58,5 +58,8 @@
   "metalbarrels.player_message.sorry_metal": "Извините, этот предмет работает только с металлическими бочками!",
   "metalbarrels.player_message.placed": "Поместил бочку в этом месте!",
   "metalbarrels.player_message.tooltip_no_barrel": "Не держит ствол",
-  "metalbarrels.player_message.tooltip_with_barrel": "проведение "
+  "metalbarrels.player_message.tooltip_with_barrel": "проведение ",
+
+  "metalbarrels.player_overlay": "Владелец бочки: ",
+  "metalbarrels.player_message.not_owner": "Жаль, что вы не владелец этой бочки!"
 }

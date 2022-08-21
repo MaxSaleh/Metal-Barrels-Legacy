@@ -6,6 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Pose;
@@ -50,23 +51,28 @@ public class BarrelMoveItem extends Item {
 
         if (level.getBlockState(pos).getBlock() instanceof BarrelBlock) {
             if (!hasBarrel) {
-                hasBarrel = true;
                 barrelBlock = (BarrelBlock) level.getBlockState(pos).getBlock();
                 MetalBarrelBlockEntity metalBarrelBlockEntity = (MetalBarrelBlockEntity) level.getBlockEntity(pos);
 
                 if (metalBarrelBlockEntity != null) {
-                    ItemStackHandler stackHandler = metalBarrelBlockEntity.handler;
-                    for (int i = 0; i < stackHandler.getSlots(); i++) {
-                        if (!(stackHandler.getStackInSlot(i).getItem() instanceof AirItem)) {
-                            storedItems.put(stackHandler.getStackInSlot(i), i);
+                    if (metalBarrelBlockEntity.getOwner().getString().equals(player.getDisplayName().getString())) {
+                        ItemStackHandler stackHandler = metalBarrelBlockEntity.handler;
+                        for (int i = 0; i < stackHandler.getSlots(); i++) {
+                            if (!(stackHandler.getStackInSlot(i).getItem() instanceof AirItem)) {
+                                storedItems.put(stackHandler.getStackInSlot(i), i);
+                            }
                         }
+
+                        hasBarrel = true;
+                        level.removeBlock(pos, false);
+                        level.removeBlockEntity(pos);
+                        player.sendMessage(new TranslatableComponent("metalbarrels.player_message.successful")
+                                .withStyle(ChatFormatting.GREEN), player.getUUID());
+                    } else {
+                        player.sendMessage(new TranslatableComponent("metalbarrels.player_message.not_owner")
+                                .withStyle(ChatFormatting.RED), player.getUUID());
                     }
                 }
-
-                level.removeBlock(pos, false);
-                level.removeBlockEntity(pos);
-                player.sendMessage(new TranslatableComponent("metalbarrels.player_message.successful")
-                        .withStyle(ChatFormatting.GREEN), player.getUUID());
             } else {
                 player.sendMessage(new TranslatableComponent("metalbarrels.player_message.sorry")
                         .withStyle(ChatFormatting.RED), player.getUUID());
@@ -106,6 +112,7 @@ public class BarrelMoveItem extends Item {
                 for (ItemStack itemStack : storedItems.keySet()) {
                     metalBarrelBlockEntity.handler.setStackInSlot(storedItems.get(itemStack), itemStack);
                 }
+                metalBarrelBlockEntity.setOwner(new TextComponent(player.getDisplayName().getString()));
             }
 
             storedItems.clear();
