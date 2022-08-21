@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Pose;
@@ -129,7 +130,7 @@ public class BarrelUpgradeItem extends Item {
     // Barrel Block Item Transfer
     if (newBarrel instanceof MetalBarrelBlockEntity) {
       for (ItemStack itemStack : barrelItems) {
-        //newBarrel.saveToItem(itemStack); // TODO
+        //newBarrel.saveToItem(itemStack);
       }
     }
 

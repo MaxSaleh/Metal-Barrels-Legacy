@@ -1,4 +1,4 @@
-package me.maxish0t.metalbarrels.util;
+package me.maxish0t.metalbarrels.common.init;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;

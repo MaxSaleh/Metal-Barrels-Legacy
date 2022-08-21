@@ -5,7 +5,7 @@
     ],
     "key":{
         "d":{"tag":"forge:gems/diamond"},
-        "s":{"item":"minecraft:lapis_lazuli"}
+        "s":{"tag":"forge:ingots/silver"}
     },
     "result":{"item":"metalbarrels:silver_to_diamond"}
 }

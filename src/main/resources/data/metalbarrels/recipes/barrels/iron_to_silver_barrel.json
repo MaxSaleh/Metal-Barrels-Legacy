@@ -4,7 +4,7 @@
         "sbs"
     ],
     "key":{
-        "s":{"item":"minecraft:lapis_lazuli"},
+        "s":{"tag":"forge:ingots/silver"},
         "b":{"tag":"forge:barrels/iron"}
     },
     "result":{"item":"metalbarrels:silver_barrel"}

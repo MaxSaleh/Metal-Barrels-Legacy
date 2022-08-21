@@ -37,7 +37,7 @@ public class UpgradeInfo {
     return this;
   }
 
-  public boolean canUpgrade(BlockState barrel){
+  public boolean canUpgrade(BlockState barrel) {
     return IntStream.range(0, start_blocks.size()).anyMatch(i -> barrel.is(start_blocks.get(i)));
   }
 }
