@@ -61,11 +61,11 @@ public class BarrelMoveItem extends Item {
                             }
                         }
 
+                        hasBarrel = true;
                         level.removeBlock(pos, false);
                         level.removeBlockEntity(pos);
                         player.sendSystemMessage(Component.translatable("metalbarrels.player_message.successful")
                                 .withStyle(ChatFormatting.GREEN));
-                        hasBarrel = true;
                     } else {
                         player.sendSystemMessage(Component.translatable("metalbarrels.player_message.not_owner")
                                 .withStyle(ChatFormatting.RED));
