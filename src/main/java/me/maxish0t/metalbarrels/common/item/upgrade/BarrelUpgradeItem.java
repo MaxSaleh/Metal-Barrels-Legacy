@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AirItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BarrelBlock;
@@ -23,8 +22,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import javax.annotation.Nonnull;
@@ -39,19 +36,6 @@ public class BarrelUpgradeItem extends Item {
   public BarrelUpgradeItem(Properties properties, UpgradeInfo info) {
     super(properties);
     this.upgradeInfo = info;
-  }
-
-  private static final Component s = Component.translatable("tooltip.metalbarrels.ironchest")
-          .append(ChatFormatting.GREEN.toString());
-
-  public static boolean IRON_CHESTS_LOADED;
-
-  @Override
-  @OnlyIn(Dist.CLIENT)
-  public void appendHoverText(ItemStack p_41421_, @org.jetbrains.annotations.Nullable Level p_41422_, List<Component> tooltip, TooltipFlag p_41424_) {
-    if (IRON_CHESTS_LOADED) {
-      tooltip.add(s);
-    }
   }
 
   @Nonnull
@@ -105,11 +89,14 @@ public class BarrelUpgradeItem extends Item {
         oldBarrelContents.add(((ChestBlockEntity) oldBarrel).getItem(i));
       }
     } else {
-      oldBarrel.getCapability(ForgeCapabilities.ITEM_HANDLER)
-              .ifPresent((itemHandler) -> IntStream.range(0, itemHandler.getSlots())
-                      .mapToObj(itemHandler::getStackInSlot).forEach(oldBarrelContents::add));
+      if (oldBarrel != null)
+        oldBarrel.getCapability(ForgeCapabilities.ITEM_HANDLER)
+                .ifPresent((itemHandler) -> IntStream.range(0, itemHandler.getSlots())
+                        .mapToObj(itemHandler::getStackInSlot).forEach(oldBarrelContents::add));
     }
-    oldBarrel.setRemoved();
+
+    if (oldBarrel != null)
+      oldBarrel.setRemoved();
 
     Block newBlock = upgradeInfo.getBlock(state.getBlock());
 

@@ -1,9 +1,9 @@
 package me.maxish0t.metalbarrels.common.init;
 
-import me.maxish0t.metalbarrels.MetalBarrels;
 import me.maxish0t.metalbarrels.common.item.extra.BarrelMoveItem;
 import me.maxish0t.metalbarrels.common.item.upgrade.BarrelUpgradeItem;
 import me.maxish0t.metalbarrels.common.item.upgrade.UpgradeInfo;
+import me.maxish0t.metalbarrels.util.ModReference;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
@@ -16,7 +16,7 @@ import java.util.Collections;
 
 public class ModItems {
 
-    public static final DeferredRegister<Item> REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS, MetalBarrels.MODID);
+    public static final DeferredRegister<Item> REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS, ModReference.MODID);
     private static final Item.Properties properties = new Item.Properties().tab(ModTabs.tab);
 
     /**
@@ -63,49 +63,49 @@ public class ModItems {
             "wood_to_copper", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.WOODEN_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.COPPER_BARREL.get()))
-            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.COPPER_BARREL.get(), MetalBarrels.MODID))
+            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.COPPER_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> WOOD_TO_IRON = REGISTER.register(
             "wood_to_iron", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.WOODEN_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.IRON_BARREL.get()))
-            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.IRON_BARREL.get(), MetalBarrels.MODID))
+            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.IRON_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> WOOD_TO_SILVER = REGISTER.register(
             "wood_to_silver", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.WOODEN_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.SILVER_BARREL.get()))
-            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.SILVER_BARREL.get(), MetalBarrels.MODID))
+            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.SILVER_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> WOOD_TO_GOLD = REGISTER.register(
             "wood_to_gold", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.WOODEN_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.GOLD_BARREL.get()))
-            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.GOLD_BARREL.get(), MetalBarrels.MODID))
+            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.GOLD_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> WOOD_TO_DIAMOND = REGISTER.register(
             "wood_to_diamond", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.WOODEN_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.DIAMOND_BARREL.get()))
-            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.DIAMOND_BARREL.get(), MetalBarrels.MODID))
+            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.DIAMOND_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> WOOD_TO_OBSIDIAN = REGISTER.register(
             "wood_to_obsidian", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.WOODEN_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.OBSIDIAN_BARREL.get()))
-            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.OBSIDIAN_BARREL.get(), MetalBarrels.MODID))
+            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.OBSIDIAN_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> WOOD_TO_NETHERITE = REGISTER.register(
             "wood_to_netherite", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.WOODEN_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.NETHERITE_BARREL.get()))
-            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.NETHERITE_BARREL.get(), MetalBarrels.MODID))
+            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.NETHERITE_BARREL.get(), ModReference.MODID))
     );
 
     /**
@@ -116,35 +116,35 @@ public class ModItems {
             "copper_to_iron", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.COPPER_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.IRON_BARREL.get()))
-            ).add(ModTags.Blocks.COPPER_CHESTS, ModBlocks.IRON_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.COPPER_CHESTS, ModBlocks.IRON_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> COPPER_TO_SILVER = REGISTER.register(
             "copper_to_silver", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.COPPER_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.SILVER_BARREL.get()))
-            ).add(ModTags.Blocks.COPPER_CHESTS, ModBlocks.SILVER_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.COPPER_CHESTS, ModBlocks.SILVER_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> COPPER_TO_GOLD = REGISTER.register(
             "copper_to_gold", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.COPPER_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.GOLD_BARREL.get()))
-            ).add(ModTags.Blocks.COPPER_CHESTS, ModBlocks.GOLD_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.COPPER_CHESTS, ModBlocks.GOLD_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> COPPER_TO_DIAMOND = REGISTER.register(
             "copper_to_diamond", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.COPPER_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.DIAMOND_BARREL.get()))
-            ).add(ModTags.Blocks.COPPER_CHESTS, ModBlocks.DIAMOND_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.COPPER_CHESTS, ModBlocks.DIAMOND_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> COPPER_TO_OBSIDIAN = REGISTER.register(
             "copper_to_obsidian", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.COPPER_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.OBSIDIAN_BARREL.get()))
-            ).add(ModTags.Blocks.COPPER_CHESTS, ModBlocks.OBSIDIAN_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.COPPER_CHESTS, ModBlocks.OBSIDIAN_BARREL.get(), ModReference.MODID))
     );
 
     /**
@@ -155,28 +155,28 @@ public class ModItems {
             "iron_to_silver", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.IRON_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.SILVER_BARREL.get()))
-            ).add(ModTags.Blocks.IRON_CHESTS, ModBlocks.SILVER_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.IRON_CHESTS, ModBlocks.SILVER_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> IRON_TO_GOLD = REGISTER.register(
             "iron_to_gold", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.IRON_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.GOLD_BARREL.get()))
-            ).add(ModTags.Blocks.IRON_CHESTS, ModBlocks.GOLD_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.IRON_CHESTS, ModBlocks.GOLD_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> IRON_TO_DIAMOND = REGISTER.register(
             "iron_to_diamond", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.IRON_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.DIAMOND_BARREL.get()))
-            ).add(ModTags.Blocks.IRON_CHESTS, ModBlocks.DIAMOND_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.IRON_CHESTS, ModBlocks.DIAMOND_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> IRON_TO_OBSIDIAN = REGISTER.register(
             "iron_to_obsidian", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.IRON_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.OBSIDIAN_BARREL.get()))
-            ).add(ModTags.Blocks.IRON_CHESTS, ModBlocks.OBSIDIAN_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.IRON_CHESTS, ModBlocks.OBSIDIAN_BARREL.get(), ModReference.MODID))
     );
 
     /**
@@ -187,21 +187,21 @@ public class ModItems {
             "silver_to_gold", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.SILVER_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.GOLD_BARREL.get()))
-            ).add(ModTags.Blocks.SILVER_CHESTS, ModBlocks.GOLD_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.SILVER_CHESTS, ModBlocks.GOLD_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> SILVER_TO_DIAMOND = REGISTER.register(
             "silver_to_diamond", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.SILVER_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.DIAMOND_BARREL.get()))
-            ).add(ModTags.Blocks.SILVER_CHESTS, ModBlocks.DIAMOND_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.SILVER_CHESTS, ModBlocks.DIAMOND_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> SILVER_TO_OBSIDIAN = REGISTER.register(
             "silver_to_obsidian", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.SILVER_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.OBSIDIAN_BARREL.get()))
-            ).add(ModTags.Blocks.SILVER_CHESTS, ModBlocks.OBSIDIAN_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.SILVER_CHESTS, ModBlocks.OBSIDIAN_BARREL.get(), ModReference.MODID))
     );
 
     /**
@@ -212,21 +212,21 @@ public class ModItems {
             "gold_to_diamond", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.GOLD_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.DIAMOND_BARREL.get()))
-            ).add(ModTags.Blocks.GOLD_CHESTS, ModBlocks.DIAMOND_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.GOLD_CHESTS, ModBlocks.DIAMOND_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> GOLD_TO_OBSIDIAN = REGISTER.register(
             "gold_to_obsidian", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.GOLD_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.OBSIDIAN_BARREL.get()))
-            ).add(ModTags.Blocks.GOLD_CHESTS, ModBlocks.OBSIDIAN_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.GOLD_CHESTS, ModBlocks.OBSIDIAN_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> DIAMOND_TO_OBSIDIAN = REGISTER.register(
             "diamond_to_obsidian", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.DIAMOND_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.OBSIDIAN_BARREL.get()))
-            ).add(ModTags.Blocks.DIAMOND_CHESTS, ModBlocks.OBSIDIAN_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.DIAMOND_CHESTS, ModBlocks.OBSIDIAN_BARREL.get(), ModReference.MODID))
     );
 
     /**
@@ -237,42 +237,42 @@ public class ModItems {
             "wood_to_crystal", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.WOODEN_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.CRYSTAL_BARREL.get()))
-            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.CRYSTAL_BARREL.get(), MetalBarrels.MODID))
+            ).add(Tags.Blocks.CHESTS_WOODEN, ModBlocks.CRYSTAL_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> COPPER_TO_CRYSTAL = REGISTER.register(
             "copper_to_crystal", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.COPPER_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.CRYSTAL_BARREL.get()))
-            ).add(ModTags.Blocks.COPPER_CHESTS, ModBlocks.CRYSTAL_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.COPPER_CHESTS, ModBlocks.CRYSTAL_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> IRON_TO_CRYSTAL = REGISTER.register(
             "iron_to_crystal", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.IRON_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.CRYSTAL_BARREL.get()))
-            ).add(ModTags.Blocks.IRON_CHESTS, ModBlocks.CRYSTAL_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.IRON_CHESTS, ModBlocks.CRYSTAL_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> SILVER_TO_CRYSTAL = REGISTER.register(
             "silver_to_crystal", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.SILVER_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.CRYSTAL_BARREL.get()))
-            ).add(ModTags.Blocks.SILVER_CHESTS, ModBlocks.CRYSTAL_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.SILVER_CHESTS, ModBlocks.CRYSTAL_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> GOLD_TO_CRYSTAL = REGISTER.register(
             "gold_to_crystal", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.GOLD_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.CRYSTAL_BARREL.get()))
-            ).add(ModTags.Blocks.GOLD_CHESTS, ModBlocks.CRYSTAL_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.GOLD_CHESTS, ModBlocks.CRYSTAL_BARREL.get(), ModReference.MODID))
     );
 
     public static final RegistryObject<BarrelUpgradeItem> DIAMOND_TO_CRYSTAL = REGISTER.register(
             "diamond_to_crystal", () -> new BarrelUpgradeItem(properties, new UpgradeInfo(
                     new ArrayList<>(Collections.singleton(ModTags.Blocks.DIAMOND_BARRELS)),
                     new ArrayList<>(Collections.singleton(ModBlocks.CRYSTAL_BARREL.get()))
-            ).add(ModTags.Blocks.DIAMOND_CHESTS, ModBlocks.CRYSTAL_BARREL.get(), MetalBarrels.MODID))
+            ).add(ModTags.Blocks.DIAMOND_CHESTS, ModBlocks.CRYSTAL_BARREL.get(), ModReference.MODID))
     );
 
     /**

@@ -3,8 +3,8 @@ package me.maxish0t.metalbarrels.client.screens;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import me.maxish0t.metalbarrels.MetalBarrels;
 import me.maxish0t.metalbarrels.common.container.MetalBarrelContainer;
+import me.maxish0t.metalbarrels.util.ModReference;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -60,12 +60,12 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
   }
 
-  private static final ResourceLocation COPPER = new ResourceLocation(MetalBarrels.MODID,"textures/gui/container/copper.png");
-  private static final ResourceLocation IRON = new ResourceLocation(MetalBarrels.MODID,"textures/gui/container/iron.png");
-  private static final ResourceLocation SILVER = new ResourceLocation(MetalBarrels.MODID,"textures/gui/container/silver.png");
-  private static final ResourceLocation GOLD = new ResourceLocation(MetalBarrels.MODID,"textures/gui/container/gold.png");
-  private static final ResourceLocation DIAMOND = new ResourceLocation(MetalBarrels.MODID,"textures/gui/container/diamond.png");
-  private static final ResourceLocation NETHERITE = new ResourceLocation(MetalBarrels.MODID,"textures/gui/container/netherite.png");
+  private static final ResourceLocation COPPER = new ResourceLocation(ModReference.MODID,"textures/gui/container/copper.png");
+  private static final ResourceLocation IRON = new ResourceLocation(ModReference.MODID,"textures/gui/container/iron.png");
+  private static final ResourceLocation SILVER = new ResourceLocation(ModReference.MODID,"textures/gui/container/silver.png");
+  private static final ResourceLocation GOLD = new ResourceLocation(ModReference.MODID,"textures/gui/container/gold.png");
+  private static final ResourceLocation DIAMOND = new ResourceLocation(ModReference.MODID,"textures/gui/container/diamond.png");
+  private static final ResourceLocation NETHERITE = new ResourceLocation(ModReference.MODID,"textures/gui/container/netherite.png");
 
 
   public static @NotNull MetalBarrelScreen copper(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component) {

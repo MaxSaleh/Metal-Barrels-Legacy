@@ -46,4 +46,5 @@ public class CrystalBarrelRender implements BlockEntityRenderer<MetalBarrelBlock
                 OverlayTexture.NO_OVERLAY, matrices, buffer, 0);
         matrices.popPose();
     }
+
 }

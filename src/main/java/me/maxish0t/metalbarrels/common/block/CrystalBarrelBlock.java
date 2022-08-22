@@ -38,4 +38,5 @@ public class CrystalBarrelBlock extends MetalBarrelBlock {
     public @NotNull VoxelShape getBlockSupportShape(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos) {
         return Shapes.empty();
     }
+
 }
