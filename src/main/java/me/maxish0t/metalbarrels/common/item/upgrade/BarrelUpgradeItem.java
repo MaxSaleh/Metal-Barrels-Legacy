@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -105,7 +105,7 @@ public class BarrelUpgradeItem extends Item {
         oldBarrelContents.add(((ChestBlockEntity) oldBarrel).getItem(i));
       }
     } else {
-      oldBarrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+      oldBarrel.getCapability(ForgeCapabilities.ITEM_HANDLER)
               .ifPresent((itemHandler) -> IntStream.range(0, itemHandler.getSlots())
                       .mapToObj(itemHandler::getStackInSlot).forEach(oldBarrelContents::add));
     }
@@ -131,8 +131,9 @@ public class BarrelUpgradeItem extends Item {
       }
     }
 
-    newBarrel.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent((itemHandler) ->
-            IntStream.range(0, oldBarrelContents.size()).forEach(i -> itemHandler.insertItem(i, oldBarrelContents.get(i), false)));
+    if (newBarrel != null)
+      newBarrel.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent((itemHandler) ->
+              IntStream.range(0, oldBarrelContents.size()).forEach(i -> itemHandler.insertItem(i, oldBarrelContents.get(i), false)));
 
     if (!player.getAbilities().instabuild)
       heldStack.shrink(1);

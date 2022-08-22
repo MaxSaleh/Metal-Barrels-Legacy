@@ -22,17 +22,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.level.block.BarrelBlock;
-import net.minecraft.world.level.block.entity.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider, Nameable {
 
@@ -98,6 +97,7 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
       protected void onContentsChanged(int slot) {
         super.onContentsChanged(slot);
         setChanged();
+        System.out.println("WORKS!");
       }
     };
     optional = LazyOptional.of(() -> handler);
@@ -160,6 +160,11 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     }
   }
 
+  @Override
+  public void setChanged() {
+    super.setChanged();
+  }
+
   @Nullable
   @Override
   public AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory, @NotNull Player player) {
@@ -171,7 +176,7 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
 
   @Override
   public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-    return cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? optional.cast() : super.getCapability(cap, side);
+    return cap == ForgeCapabilities.ITEM_HANDLER ? optional.cast() : super.getCapability(cap, side);
   }
 
   @Override
