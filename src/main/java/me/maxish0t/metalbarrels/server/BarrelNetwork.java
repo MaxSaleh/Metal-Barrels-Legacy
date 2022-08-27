@@ -1,6 +1,5 @@
 package me.maxish0t.metalbarrels.server;
 
-import me.maxish0t.metalbarrels.server.packets.CrystalBarrelItemsPacket;
 import me.maxish0t.metalbarrels.util.ModReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -19,13 +18,6 @@ public class BarrelNetwork {
     public static void register() {
         int networkId = 0;
 
-        // Server -> Client
-        CHANNEL.registerMessage(networkId++,
-                CrystalBarrelItemsPacket.class,
-                CrystalBarrelItemsPacket::encode,
-                CrystalBarrelItemsPacket::decode,
-                CrystalBarrelItemsPacket::handle
-        );
     }
 
     public static void sendToClient(Object msg, ServerLevel serverWorld, BlockPos position) {
