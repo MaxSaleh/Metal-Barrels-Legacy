@@ -2,6 +2,7 @@ package me.maxish0t.metalbarrels.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import me.maxish0t.metalbarrels.client.config.ClientConfig;
 import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -36,13 +37,15 @@ public class CrystalBarrelRender implements BlockEntityRenderer<MetalBarrelBlock
 
     @Override
     public void render(@NotNull MetalBarrelBlockEntity blockEntity, float partialTicks, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int combinedLightIn, int combinedOverlayIn) {
-        BlockPos blockPos = blockEntity.getBlockPos();
-        if (Minecraft.getInstance().player != null) {
-            double distanceAway = blockPos.distToCenterSqr(Minecraft.getInstance().player.position());
-            if (distanceAway < 165) {
-                for (int i = 0; i < 8; i++) {
-                    renderItem(poseStack, bufferSource, blockEntity.getItemStackHandler().getStackInSlot(i),
-                            vector3fList.get(i), 0.2F, 0F, combinedLightIn);
+        if (ClientConfig.CRYSTAL_BARREL_ITEMS_RENDER.get()) {
+            BlockPos blockPos = blockEntity.getBlockPos();
+            if (Minecraft.getInstance().player != null) {
+                double distanceAway = blockPos.distToCenterSqr(Minecraft.getInstance().player.position());
+                if (distanceAway < 165) {
+                    for (int i = 0; i < 8; i++) {
+                        renderItem(poseStack, bufferSource, blockEntity.getItemStackHandler().getStackInSlot(i),
+                                vector3fList.get(i), 0.2F, 0F, combinedLightIn);
+                    }
                 }
             }
         }
