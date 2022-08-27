@@ -5,6 +5,7 @@ import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import me.maxish0t.metalbarrels.MetalBarrels;
 import me.maxish0t.metalbarrels.util.ModReference;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -138,8 +139,6 @@ public class MetalBarrelContainer extends AbstractContainerMenu {
 			this.addSlot(new Slot(playerInventory, i, i * 18 + playerX, playerY + 58));
 		}
 	}
-
-
 
 	@Override
 	public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {

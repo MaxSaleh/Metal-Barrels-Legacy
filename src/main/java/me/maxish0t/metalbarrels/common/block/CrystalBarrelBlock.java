@@ -1,6 +1,12 @@
 package me.maxish0t.metalbarrels.common.block;
 
+import me.maxish0t.metalbarrels.common.init.ModItems;
+import me.maxish0t.metalbarrels.server.BarrelNetwork;
+import me.maxish0t.metalbarrels.server.packets.CrystalBarrelItemsPacket;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -16,6 +22,15 @@ public class CrystalBarrelBlock extends MetalBarrelBlock {
     public CrystalBarrelBlock(Properties properties, String barrelName,
                               BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier, int slotWidth, int slotHeight) {
         super(properties.noOcclusion(), barrelName, blockEntitySupplier, slotWidth, slotHeight);
+    }
+
+    @Override
+    public void tick(@NotNull BlockState blockState, @NotNull ServerLevel serverLevel, @NotNull BlockPos blockPos, @NotNull RandomSource randomSource) {
+        super.tick(blockState, serverLevel, blockPos, randomSource);
+
+        // TODO fix the tick timing level to help with lag
+        BarrelNetwork.sendToClient(new CrystalBarrelItemsPacket(new ItemStack(ModItems.COPPER_BARREL.get())), serverLevel, blockPos);
+        System.out.println("WORKS!");
     }
 
     @Override

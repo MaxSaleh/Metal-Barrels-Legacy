@@ -1,8 +1,13 @@
 package me.maxish0t.metalbarrels.server;
 
+import me.maxish0t.metalbarrels.server.packets.CrystalBarrelItemsPacket;
 import me.maxish0t.metalbarrels.util.ModReference;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class BarrelNetwork {
@@ -13,6 +18,19 @@ public class BarrelNetwork {
 
     public static void register() {
         int networkId = 0;
+
+        // Server -> Client
+        CHANNEL.registerMessage(networkId++,
+                CrystalBarrelItemsPacket.class,
+                CrystalBarrelItemsPacket::encode,
+                CrystalBarrelItemsPacket::decode,
+                CrystalBarrelItemsPacket::handle
+        );
+    }
+
+    public static void sendToClient(Object msg, ServerLevel serverWorld, BlockPos position) {
+        LevelChunk chunk = serverWorld.getChunkAt(position);
+        CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk), msg);
     }
 
 }

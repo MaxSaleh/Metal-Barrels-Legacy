@@ -5,6 +5,7 @@ import me.maxish0t.metalbarrels.common.container.MetalBarrelContainer;
 import me.maxish0t.metalbarrels.common.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.nbt.CompoundTag;
@@ -15,12 +16,14 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.BarrelBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -97,36 +100,41 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
       protected void onContentsChanged(int slot) {
         super.onContentsChanged(slot);
         setChanged();
-        System.out.println("WORKS!");
       }
     };
     optional = LazyOptional.of(() -> handler);
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag) {
-    CompoundTag compound = this.handler.serializeNBT();
-    tag.put("inv", compound);
-    if (this.customName != null) {
-      tag.putString("CustomName", Component.Serializer.toJson(this.customName));
-    }
-    if (ownerName != null) {
-      tag.putString("ownerName", this.ownerName.getString());
-    }
-    super.saveAdditional(tag);
-  }
+  public void load(@NotNull CompoundTag tag) {
+    super.load(tag);
 
-  @Override
-  public void load(CompoundTag tag) {
     CompoundTag invTag = tag.getCompound("inv");
     handler.deserializeNBT(invTag);
+
     if (tag.contains("CustomName", 8)) {
       this.customName = Component.Serializer.fromJson(tag.getString("CustomName"));
     }
+
     if (tag.contains("ownerName")) {
       this.ownerName = Component.literal(tag.getString("ownerName"));
     }
-    super.load(tag);
+  }
+
+  @Override
+  protected void saveAdditional(@NotNull CompoundTag tag) {
+    super.saveAdditional(tag);
+
+    CompoundTag compound = this.handler.serializeNBT();
+    tag.put("inv", compound);
+
+    if (this.customName != null) {
+      tag.putString("CustomName", Component.Serializer.toJson(this.customName));
+    }
+
+    if (ownerName != null) {
+      tag.putString("ownerName", this.ownerName.getString());
+    }
   }
 
   @Nullable
@@ -139,16 +147,24 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   @Override
   public @NotNull CompoundTag getUpdateTag() {
     CompoundTag compoundTag = super.getUpdateTag();
+
     if (ownerName != null) {
       compoundTag.putString("ownerName", this.ownerName.getString());
     }
+
+    CompoundTag compound = this.handler.serializeNBT();
+    compoundTag.put("inv", compound);
+
     return compoundTag;
   }
 
   @Override
   public void handleUpdateTag(CompoundTag tag) {
-    this.ownerName = Component.literal(tag.getString("ownerName"));
     super.handleUpdateTag(tag);
+    this.ownerName = Component.literal(tag.getString("ownerName"));
+
+    CompoundTag invTag = tag.getCompound("inv");
+    handler.deserializeNBT(invTag);
   }
 
   @Override
@@ -160,17 +176,11 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     }
   }
 
-  @Override
-  public void setChanged() {
-    super.setChanged();
-  }
-
   @Nullable
   @Override
   public AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory, @NotNull Player player) {
     if (this.level == null)
       return null;
-
     return containerFactory.apply(id, inventory, ContainerLevelAccess.create(this.level, this.getBlockPos()));
   }
 
@@ -237,5 +247,10 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
       this.level.playSound(null, x, y, z, soundEvent,
               SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
     }
+  }
+
+  // Client Side Item Stack Handler
+  public ItemStackHandler getItemStackHandler() {
+    return this.handler;
   }
 }
