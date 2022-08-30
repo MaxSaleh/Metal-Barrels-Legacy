@@ -2,9 +2,12 @@ package me.maxish0t.metalbarrels.common.block;
 
 import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import me.maxish0t.metalbarrels.common.item.extra.BarrelMoveItem;
+import me.maxish0t.metalbarrels.server.BarrelNetwork;
+import me.maxish0t.metalbarrels.server.packets.BarrelLockClientPacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.*;
@@ -21,6 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.network.NetworkDirection;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -66,23 +70,44 @@ public class MetalBarrelBlock extends BarrelBlock {
   }
 
   @Override
-  public @NotNull InteractionResult use(@NotNull BlockState state, Level world, @NotNull BlockPos pos,
-                                        @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult result) {
+  public @NotNull InteractionResult use(@NotNull BlockState state, Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult result) {
     if (!world.isClientSide) {
       MenuProvider tileEntity = getMenuProvider(state, world, pos);
       if (tileEntity != null) {
-        MetalBarrelBlockEntity metalBarrelBlockEntity = (MetalBarrelBlockEntity)tileEntity;
-        world.setBlock(pos, state.setValue(BarrelBlock.OPEN, true), 3);
-        if (metalBarrelBlockEntity.players == 0) {
-          metalBarrelBlockEntity.soundStuff(state, SoundEvents.BARREL_OPEN);
-          metalBarrelBlockEntity.changeState(state, true);
+        MetalBarrelBlockEntity metalBarrelBlockEntity = (MetalBarrelBlockEntity) tileEntity;
+
+        if (metalBarrelBlockEntity.getLocked()) {
+          if (metalBarrelBlockEntity.getOwner().getString().equals(player.getDisplayName().getString())) {
+            this.openBarrel(world, pos, state, metalBarrelBlockEntity, player, tileEntity);
+          } else {
+            // TODO LANG
+            player.sendSystemMessage(Component.literal(ChatFormatting.RED + "Sorry you cannot open this barrel. The owner has it locked!"));
+          }
+        } else {
+          this.openBarrel(world, pos, state, metalBarrelBlockEntity, player, tileEntity);
         }
-        metalBarrelBlockEntity.players++;
-        player.openMenu(tileEntity);
-        player.awardStat(Stats.OPEN_BARREL);
       }
     }
     return InteractionResult.SUCCESS;
+  }
+
+  private void openBarrel(Level level, BlockPos pos, BlockState state, MetalBarrelBlockEntity metalBarrelBlockEntity, Player player, MenuProvider blockEntity) {
+    level.setBlock(pos, state.setValue(BarrelBlock.OPEN, true), 3);
+
+    if (metalBarrelBlockEntity.players == 0) {
+      metalBarrelBlockEntity.soundStuff(state, SoundEvents.BARREL_OPEN);
+      metalBarrelBlockEntity.changeState(state, true);
+    }
+
+    metalBarrelBlockEntity.players++;
+    boolean isOwner;
+    isOwner = metalBarrelBlockEntity.getOwner().getString().equals(player.getDisplayName().getString());
+
+    BarrelNetwork.CHANNEL.sendTo(new BarrelLockClientPacket(pos, metalBarrelBlockEntity.getLocked(), isOwner),
+            ((ServerPlayer) player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+
+    player.openMenu(blockEntity);
+    player.awardStat(Stats.OPEN_BARREL);
   }
 
   @Nullable

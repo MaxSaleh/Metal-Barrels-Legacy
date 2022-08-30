@@ -4,9 +4,14 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.maxish0t.metalbarrels.common.container.MetalBarrelContainer;
+import me.maxish0t.metalbarrels.server.BarrelNetwork;
+import me.maxish0t.metalbarrels.server.packets.BarrelLockClientPacket;
+import me.maxish0t.metalbarrels.server.packets.BarrelLockServerPacket;
 import me.maxish0t.metalbarrels.util.ModReference;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,12 +19,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContainer> {
 
+  private final ResourceLocation locked_texture = new ResourceLocation(ModReference.MODID,"textures/gui/container/locked.png");
+  private final ResourceLocation unlocked_texture = new ResourceLocation(ModReference.MODID,"textures/gui/container/unlocked.png");
   private final ResourceLocation texture;
   private final boolean isTall;
   private final boolean isWide;
 
-  public MetalBarrelScreen(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component,
-                           ResourceLocation texture, int xSize, int ySize) {
+  public MetalBarrelScreen(MetalBarrelContainer barrelContainer, Inventory playerInventory, Component component, ResourceLocation texture, int xSize, int ySize) {
     super(barrelContainer, playerInventory, component);
     this.imageWidth = xSize;
     this.imageHeight = ySize;
@@ -34,6 +40,23 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
     this.renderBackground(poseStack);
     super.render(poseStack, x, y, partialTicks);
     this.renderTooltip(poseStack, x, y);
+
+    // TODO LANG
+
+    BlockPos blockPos = BarrelLockClientPacket.barrelBlockPos;
+    this.clearWidgets();
+
+    if (BarrelLockClientPacket.isOwner) {
+      if (!BarrelLockClientPacket.isLocked) {
+        this.addRenderableWidget(new Button(5, this.height - 25, 50, 20, Component.literal("Lock"), (p_89910_) -> {
+          BarrelNetwork.CHANNEL.sendToServer(new BarrelLockServerPacket(blockPos, true));
+        }));
+      } else {
+        this.addRenderableWidget(new Button(5, this.height - 25, 50, 20, Component.literal("Unlock"), (p_89910_) -> {
+          BarrelNetwork.CHANNEL.sendToServer(new BarrelLockServerPacket(blockPos, false));
+        }));
+      }
+    }
   }
 
   @Override
@@ -43,15 +66,16 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
 
     int i = (this.width - this.imageWidth) / 2;
     int j = (this.height - this.imageHeight) / 2;
+
     if (!isTall) {
       this.blit(stack,i, j, 0, 0, this.imageWidth, this.imageHeight);
     } else if (!isWide) {
-      blit(stack,i, j, 0, 0,getBlitOffset(), this.imageWidth, this.imageHeight,256,512);
+      blit(stack,i, j, 0, 0, getBlitOffset(), this.imageWidth, this.imageHeight,256,512);
     } else {
       if (texture.getPath().equals("textures/gui/container/netherite.png")) {
-        blit(stack,i, j, 0, 0,getBlitOffset(), this.imageWidth, this.imageHeight,512, 512);
+        blit(stack,i, j, 0, 0, getBlitOffset(), this.imageWidth, this.imageHeight,512, 512);
       } else {
-        blit(stack,i, j, 0, 0,getBlitOffset(), this.imageWidth, this.imageHeight,256, 512);
+        blit(stack,i, j, 0, 0, getBlitOffset(), this.imageWidth, this.imageHeight,256, 512);
       }
     }
 
@@ -60,6 +84,17 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
   }
 
+  @Override
+  protected void renderTooltip(@NotNull PoseStack poseStack, int posX, int posY) {
+    super.renderTooltip(poseStack, posX, posY);
+
+    // TODO Lang File
+
+    if (isHovering(160, 4, 11, 12, posX, posY)) {
+      //this.renderTooltip(poseStack, Component.literal(ChatFormatting.RED + "Click to Lock Barrel"), posX, posY);
+    }
+  }
+  
   private static final ResourceLocation COPPER = new ResourceLocation(ModReference.MODID,"textures/gui/container/copper.png");
   private static final ResourceLocation IRON = new ResourceLocation(ModReference.MODID,"textures/gui/container/iron.png");
   private static final ResourceLocation SILVER = new ResourceLocation(ModReference.MODID,"textures/gui/container/silver.png");

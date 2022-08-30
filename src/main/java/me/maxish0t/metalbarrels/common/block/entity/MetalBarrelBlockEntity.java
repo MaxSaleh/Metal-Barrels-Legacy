@@ -5,7 +5,6 @@ import me.maxish0t.metalbarrels.common.container.MetalBarrelContainer;
 import me.maxish0t.metalbarrels.common.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.nbt.CompoundTag;
@@ -16,14 +15,12 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.BarrelBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -43,6 +40,7 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   protected final PropertyDispatch.TriFunction<Integer, Inventory, ContainerLevelAccess, AbstractContainerMenu> containerFactory;
   protected Component customName;
   protected Component ownerName;
+  private boolean isLocked = false;
   public final LazyOptional<IItemHandler> optional;
   public final ItemStackHandler handler;
   public int players = 0;
@@ -119,6 +117,10 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     if (tag.contains("ownerName")) {
       this.ownerName = Component.literal(tag.getString("ownerName"));
     }
+
+    if (tag.contains("barrelLock")) {
+      this.isLocked = tag.getBoolean("barrelLock");
+    }
   }
 
   @Override
@@ -135,6 +137,8 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     if (ownerName != null) {
       tag.putString("ownerName", this.ownerName.getString());
     }
+
+    tag.putBoolean("barrelLock", this.isLocked);
   }
 
   @Nullable
@@ -152,6 +156,8 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
       compoundTag.putString("ownerName", this.ownerName.getString());
     }
 
+    compoundTag.putBoolean("barrelLock", this.isLocked);
+
     CompoundTag compound = this.handler.serializeNBT();
     compoundTag.put("inv", compound);
 
@@ -162,6 +168,7 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   public void handleUpdateTag(CompoundTag tag) {
     super.handleUpdateTag(tag);
     this.ownerName = Component.literal(tag.getString("ownerName"));
+    this.isLocked = tag.getBoolean("barrelLock");
 
     CompoundTag invTag = tag.getCompound("inv");
     handler.deserializeNBT(invTag);
@@ -253,4 +260,13 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   public ItemStackHandler getItemStackHandler() {
     return this.handler;
   }
+
+  public void setLocked(boolean isLocked) {
+    this.isLocked = isLocked;
+  }
+
+  public boolean getLocked() {
+    return this.isLocked;
+  }
+
 }
