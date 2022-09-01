@@ -41,20 +41,16 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
     super.render(poseStack, x, y, partialTicks);
     this.renderTooltip(poseStack, x, y);
 
-    // TODO LANG
-
     BlockPos blockPos = BarrelLockClientPacket.barrelBlockPos;
     this.clearWidgets();
 
     if (BarrelLockClientPacket.isOwner) {
       if (!BarrelLockClientPacket.isLocked) {
-        this.addRenderableWidget(new Button(5, this.height - 25, 50, 20, Component.literal("Lock"), (p_89910_) -> {
-          BarrelNetwork.CHANNEL.sendToServer(new BarrelLockServerPacket(blockPos, true));
-        }));
+        this.addRenderableWidget(new Button(5, this.height - 25, 50, 20, Component.translatable("metalbarrels.screen.lock"),
+                (press) -> BarrelNetwork.CHANNEL.sendToServer(new BarrelLockServerPacket(blockPos, true))));
       } else {
-        this.addRenderableWidget(new Button(5, this.height - 25, 50, 20, Component.literal("Unlock"), (p_89910_) -> {
-          BarrelNetwork.CHANNEL.sendToServer(new BarrelLockServerPacket(blockPos, false));
-        }));
+        this.addRenderableWidget(new Button(5, this.height - 25, 50, 20, Component.literal("metalbarrels.screen.unlock"),
+                (press) -> BarrelNetwork.CHANNEL.sendToServer(new BarrelLockServerPacket(blockPos, false))));
       }
     }
   }
@@ -84,17 +80,6 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
   }
 
-  @Override
-  protected void renderTooltip(@NotNull PoseStack poseStack, int posX, int posY) {
-    super.renderTooltip(poseStack, posX, posY);
-
-    // TODO Lang File
-
-    if (isHovering(160, 4, 11, 12, posX, posY)) {
-      //this.renderTooltip(poseStack, Component.literal(ChatFormatting.RED + "Click to Lock Barrel"), posX, posY);
-    }
-  }
-  
   private static final ResourceLocation COPPER = new ResourceLocation(ModReference.MODID,"textures/gui/container/copper.png");
   private static final ResourceLocation IRON = new ResourceLocation(ModReference.MODID,"textures/gui/container/iron.png");
   private static final ResourceLocation SILVER = new ResourceLocation(ModReference.MODID,"textures/gui/container/silver.png");

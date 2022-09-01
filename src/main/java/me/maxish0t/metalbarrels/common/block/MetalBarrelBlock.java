@@ -1,15 +1,19 @@
 package me.maxish0t.metalbarrels.common.block;
 
+import me.maxish0t.metalbarrels.client.config.ClientConfig;
 import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import me.maxish0t.metalbarrels.common.item.extra.BarrelMoveItem;
 import me.maxish0t.metalbarrels.server.BarrelNetwork;
 import me.maxish0t.metalbarrels.server.packets.BarrelLockClientPacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -80,8 +84,7 @@ public class MetalBarrelBlock extends BarrelBlock {
           if (metalBarrelBlockEntity.getOwner().getString().equals(player.getDisplayName().getString())) {
             this.openBarrel(world, pos, state, metalBarrelBlockEntity, player, tileEntity);
           } else {
-            // TODO LANG
-            player.sendSystemMessage(Component.literal(ChatFormatting.RED + "Sorry you cannot open this barrel. The owner has it locked!"));
+            player.sendSystemMessage(Component.translatable("metalbarrels.block.cannot.open").withStyle(ChatFormatting.RED));
           }
         } else {
           this.openBarrel(world, pos, state, metalBarrelBlockEntity, player, tileEntity);
@@ -119,6 +122,16 @@ public class MetalBarrelBlock extends BarrelBlock {
   @Override
   public boolean hasAnalogOutputSignal(@NotNull BlockState blockState) {
     return true;
+  }
+
+  @Override
+  public void animateTick(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos, @NotNull RandomSource randomSource) {
+    super.animateTick(blockState, level, blockPos, randomSource);
+
+    if (ClientConfig.BARREL_PARTICLES_EFFECT.get()) {
+      level.addParticle(ParticleTypes.GLOW, blockPos.getX(), blockPos.getY(),
+              blockPos.getZ(), 0.0D, 0.0D, 0.0D);
+    }
   }
 
   @Override

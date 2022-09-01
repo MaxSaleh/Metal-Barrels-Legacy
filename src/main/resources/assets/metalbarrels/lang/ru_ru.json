@@ -61,5 +61,8 @@
   "metalbarrels.player_message.tooltip_with_barrel": "проведение ",
 
   "metalbarrels.player_overlay": "Владелец бочки: ",
-  "metalbarrels.player_message.not_owner": "Жаль, что вы не владелец этой бочки!"
+  "metalbarrels.player_message.not_owner": "Жаль, что вы не владелец этой бочки!",
+  "metalbarrels.screen.lock": "Замак",
+  "metalbarrels.screen.unlock": "Разблакіраваць",
+  "metalbarrels.block.cannot.open": "На жаль, вы не можаце адкрыць гэтую бочку. Гаспадар замкнуў!"
 }
