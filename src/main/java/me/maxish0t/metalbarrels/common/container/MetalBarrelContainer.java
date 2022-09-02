@@ -3,7 +3,9 @@ package me.maxish0t.metalbarrels.common.container;
 import me.maxish0t.metalbarrels.common.init.ModMenuTypes;
 import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import me.maxish0t.metalbarrels.MetalBarrels;
+import me.maxish0t.metalbarrels.util.ModReference;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -138,8 +140,6 @@ public class MetalBarrelContainer extends AbstractContainerMenu {
 		}
 	}
 
-
-
 	@Override
 	public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
 		ItemStack itemstack = ItemStack.EMPTY;
@@ -176,7 +176,7 @@ public class MetalBarrelContainer extends AbstractContainerMenu {
 		this.callable.execute((world, pos) -> {
 			BlockEntity tileEntity = world.getBlockEntity(pos);
 			if (tileEntity == null) {
-				MetalBarrels.logger.warn("Unexpected null on container close.");
+				ModReference.LOGGER.warn("Unexpected null on container close.");
 				return;
 			}
 			MetalBarrelBlockEntity metalBarrelBlockEntity = (MetalBarrelBlockEntity) tileEntity;

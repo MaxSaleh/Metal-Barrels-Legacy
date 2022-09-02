@@ -15,14 +15,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
-
 public class PlayerOverlay implements IIngameOverlay {
 
     private final Minecraft minecraft = Minecraft.getInstance();
     private final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/toasts.png");
 
     @Override
-    public void render(ForgeIngameGui gui, PoseStack poseStack, float partialTick, int width, int height) {
+    public void render(ForgeIngameGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         HitResult hitResult = minecraft.hitResult;
         if (minecraft.level != null) {
             ClientLevel clientLevel = minecraft.level;

@@ -55,5 +55,8 @@
   "metalbarrels.player_message.tooltip_with_barrel": "Trzymanie ",
 
   "metalbarrels.player_overlay": "Właściciel beczki: ",
-  "metalbarrels.player_message.not_owner": "Przepraszamy, że nie jesteś właścicielem tej beczki!"
+  "metalbarrels.player_message.not_owner": "Przepraszamy, że nie jesteś właścicielem tej beczki!",
+  "metalbarrels.screen.lock": "Zamek",
+  "metalbarrels.screen.unlock": "Odblokować",
+  "metalbarrels.block.cannot.open": "Przepraszamy, że nie możesz otworzyć tej beczki. Właściciel go zablokował!"
 }

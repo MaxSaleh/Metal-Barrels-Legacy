@@ -59,5 +59,8 @@
   "metalbarrels.player_message.tooltip_with_barrel": "Holding a ",
 
   "metalbarrels.player_overlay": "Barrel Owner: ",
-  "metalbarrels.player_message.not_owner": "Sorry you are not the owner of this barrel!"
+  "metalbarrels.player_message.not_owner": "Sorry you are not the owner of this barrel!",
+  "metalbarrels.screen.lock": "Lock",
+  "metalbarrels.screen.unlock": "Unlock",
+  "metalbarrels.block.cannot.open": "Sorry you cannot open this barrel. The owner has it locked!"
 }

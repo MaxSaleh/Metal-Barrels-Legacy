@@ -3,7 +3,7 @@ package me.maxish0t.metalbarrels.common.init;
 import me.maxish0t.metalbarrels.common.block.CrystalBarrelBlock;
 import me.maxish0t.metalbarrels.common.block.MetalBarrelBlock;
 import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
-import me.maxish0t.metalbarrels.MetalBarrels;
+import me.maxish0t.metalbarrels.util.ModReference;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -14,7 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModBlocks {
 
-    public static final DeferredRegister<Block> REGISTER = DeferredRegister.create(ForgeRegistries.BLOCKS, MetalBarrels.MODID);
+    public static final DeferredRegister<Block> REGISTER = DeferredRegister.create(ForgeRegistries.BLOCKS, ModReference.MODID);
 
     private static final BlockBehaviour.Properties metal = BlockBehaviour.Properties
             .of(Material.METAL)
