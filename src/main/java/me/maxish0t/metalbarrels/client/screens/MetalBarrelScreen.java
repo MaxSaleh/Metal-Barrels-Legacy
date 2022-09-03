@@ -3,6 +3,8 @@ package me.maxish0t.metalbarrels.client.screens;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import me.maxish0t.metalbarrels.client.screens.button.BarrelLockButton;
+import me.maxish0t.metalbarrels.client.screens.button.BarrelUnlockButton;
 import me.maxish0t.metalbarrels.common.container.MetalBarrelContainer;
 import me.maxish0t.metalbarrels.server.BarrelNetwork;
 import me.maxish0t.metalbarrels.server.packets.BarrelLockClientPacket;
@@ -46,10 +48,10 @@ public class MetalBarrelScreen extends AbstractContainerScreen<MetalBarrelContai
 
     if (BarrelLockClientPacket.isOwner) {
       if (!BarrelLockClientPacket.isLocked) {
-        this.addRenderableWidget(new Button(5, this.height - 25, 50, 20, Component.translatable("metalbarrels.screen.lock"),
+        this.addRenderableWidget(new BarrelLockButton(5, this.height - 35, 25, 30, Component.translatable("metalbarrels.screen.lock"),
                 (press) -> BarrelNetwork.CHANNEL.sendToServer(new BarrelLockServerPacket(blockPos, true))));
       } else {
-        this.addRenderableWidget(new Button(5, this.height - 25, 50, 20, Component.literal("metalbarrels.screen.unlock"),
+        this.addRenderableWidget(new BarrelUnlockButton(5, this.height - 35, 25, 30, Component.translatable("metalbarrels.screen.unlock"),
                 (press) -> BarrelNetwork.CHANNEL.sendToServer(new BarrelLockServerPacket(blockPos, false))));
       }
     }
