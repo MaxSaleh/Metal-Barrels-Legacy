@@ -5,11 +5,11 @@ import me.maxish0t.metalbarrels.common.block.entity.MetalBarrelBlockEntity;
 import me.maxish0t.metalbarrels.common.item.extra.BarrelMoveItem;
 import me.maxish0t.metalbarrels.server.BarrelNetwork;
 import me.maxish0t.metalbarrels.server.packets.BarrelLockClientPacket;
+import me.maxish0t.metalbarrels.server.packets.OpenedBarrelPacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
@@ -84,7 +84,15 @@ public class MetalBarrelBlock extends BarrelBlock {
           if (metalBarrelBlockEntity.getOwner().getString().equals(player.getDisplayName().getString())) {
             this.openBarrel(world, pos, state, metalBarrelBlockEntity, player, tileEntity);
           } else {
-            player.sendSystemMessage(Component.translatable("metalbarrels.block.cannot.open").withStyle(ChatFormatting.RED));
+            boolean isWhitelisted = false;
+            for (int i = 0; i < metalBarrelBlockEntity.getWhitelistedPlayers().size(); i++)
+              if (metalBarrelBlockEntity.getWhitelistedPlayers().get(i).equals(player.getDisplayName().getString()))
+                isWhitelisted = true;
+
+            if (isWhitelisted)
+              openBarrel(world, pos, state, metalBarrelBlockEntity, player, tileEntity);
+            else
+              player.sendSystemMessage(Component.translatable("metalbarrels.block.cannot.open").withStyle(ChatFormatting.RED));
           }
         } else {
           this.openBarrel(world, pos, state, metalBarrelBlockEntity, player, tileEntity);
@@ -108,6 +116,8 @@ public class MetalBarrelBlock extends BarrelBlock {
 
     BarrelNetwork.CHANNEL.sendTo(new BarrelLockClientPacket(pos, metalBarrelBlockEntity.getLocked(), isOwner),
             ((ServerPlayer) player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+
+    BarrelNetwork.CHANNEL.sendTo(new OpenedBarrelPacket(pos), ((ServerPlayer) player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
 
     player.openMenu(blockEntity);
     player.awardStat(Stats.OPEN_BARREL);
@@ -165,6 +175,7 @@ public class MetalBarrelBlock extends BarrelBlock {
 
   @Override
   public void appendHoverText(@NotNull ItemStack p_49816_, @Nullable BlockGetter p_49817_, @NotNull List<Component> list, @NotNull TooltipFlag p_49819_) {
+    // TODO lang
     list.add(Component.literal(ChatFormatting.BLUE + "Slot Width: " + ChatFormatting.GRAY + slotWidth));
     list.add(Component.literal(ChatFormatting.BLUE + "Slot Height: " + ChatFormatting.GRAY + slotHeight));
     list.add(Component.literal(ChatFormatting.BLUE + "Slot Count: " + ChatFormatting.GRAY + (slotWidth * slotHeight)));

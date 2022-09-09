@@ -3,12 +3,14 @@ package me.maxish0t.metalbarrels.common.block.entity;
 import me.maxish0t.metalbarrels.common.block.MetalBarrelBlock;
 import me.maxish0t.metalbarrels.common.container.MetalBarrelContainer;
 import me.maxish0t.metalbarrels.common.init.ModBlockEntities;
+import me.maxish0t.metalbarrels.util.ModReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -26,6 +28,8 @@ import net.minecraft.world.level.block.BarrelBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -34,6 +38,9 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider, Nameable {
 
   protected final int width;
@@ -41,6 +48,7 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   protected final PropertyDispatch.TriFunction<Integer, Inventory, ContainerLevelAccess, AbstractContainerMenu> containerFactory;
   protected Component customName;
   protected Component ownerName;
+  protected ListTag whitelistedPlayers = new ListTag();
   private boolean isLocked = false;
   public final LazyOptional<IItemHandler> optional;
   public final ItemStackHandler handler;
@@ -111,17 +119,17 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     CompoundTag invTag = tag.getCompound("inv");
     handler.deserializeNBT(invTag);
 
-    if (tag.contains("CustomName", 8)) {
+    if (tag.contains("CustomName", 8))
       this.customName = Component.Serializer.fromJson(tag.getString("CustomName"));
-    }
 
-    if (tag.contains("ownerName")) {
+    if (tag.contains("ownerName"))
       this.ownerName = Component.literal(tag.getString("ownerName"));
-    }
 
-    if (tag.contains("barrelLock")) {
+    if (tag.contains("barrelLock"))
       this.isLocked = tag.getBoolean("barrelLock");
-    }
+
+    if (tag.contains("playerNames"))
+      this.whitelistedPlayers = tag.getList("playerNames", Tag.TAG_COMPOUND);
   }
 
   @Override
@@ -131,15 +139,14 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     CompoundTag compound = this.handler.serializeNBT();
     tag.put("inv", compound);
 
-    if (this.customName != null) {
+    if (this.customName != null)
       tag.putString("CustomName", Component.Serializer.toJson(this.customName));
-    }
 
-    if (ownerName != null) {
+    if (this.ownerName != null)
       tag.putString("ownerName", this.ownerName.getString());
-    }
 
-    tag.putBoolean("barrelLock", this.isLocked);
+    if (this.whitelistedPlayers != null)
+      tag.put("playerNames", this.whitelistedPlayers);
   }
 
   @Nullable
@@ -153,14 +160,16 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
   public @NotNull CompoundTag getUpdateTag() {
     CompoundTag compoundTag = super.getUpdateTag();
 
-    if (ownerName != null) {
+    if (this.ownerName != null)
       compoundTag.putString("ownerName", this.ownerName.getString());
-    }
 
     compoundTag.putBoolean("barrelLock", this.isLocked);
 
     CompoundTag compound = this.handler.serializeNBT();
     compoundTag.put("inv", compound);
+
+    if (this.whitelistedPlayers != null)
+      compoundTag.put("playerNames", this.whitelistedPlayers);
 
     return compoundTag;
   }
@@ -173,6 +182,8 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
 
     CompoundTag invTag = tag.getCompound("inv");
     handler.deserializeNBT(invTag);
+
+    this.whitelistedPlayers = tag.getList("playerNames", Tag.TAG_COMPOUND);
   }
 
   @Override
@@ -251,13 +262,10 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     double y = this.getBlockPos().getY() + 0.5D + vec3i.getY() / 2.0D;
     double z = this.getBlockPos().getZ() + 0.5D + vec3i.getZ() / 2.0D;
 
-    if (level != null) {
-      this.level.playSound(null, x, y, z, soundEvent,
-              SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
-    }
+    if (level != null)
+      this.level.playSound(null, x, y, z, soundEvent, SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
   }
 
-  // Client Side Item Stack Handler
   public ItemStackHandler getItemStackHandler() {
     return this.handler;
   }
@@ -270,4 +278,34 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     return this.isLocked;
   }
 
+  public void addWhitelistedPlayer(String username) {
+    CompoundTag tag = new CompoundTag();
+    tag.putString("name", username);
+
+    boolean hasName = false;
+    for (int i = 0; i < this.whitelistedPlayers.size(); i++)
+      if (this.whitelistedPlayers.getCompound(i).getString("name").equals(username))
+        hasName = true;
+
+    if (!hasName)
+      this.whitelistedPlayers.add(tag);
+    else
+      ModReference.LOGGER.warn("Cannot add the username " + username + " in the barrel whitelist as it is already added!");
+  }
+
+  public void removeWhitelistedPlayer(String username) {
+    for (int i = 0; i < this.whitelistedPlayers.size(); i++) {
+      if (this.whitelistedPlayers.getCompound(i).getString("name").equals(username))
+        this.whitelistedPlayers.remove(i);
+      else
+        ModReference.LOGGER.warn("Cannot find the username " + username + " in the barrel whitelist!");
+    }
+  }
+
+  public List<String> getWhitelistedPlayers() {
+    List<String> playerNames = new ArrayList<>();
+    for (int i = 0; i < this.whitelistedPlayers.size(); i++)
+      playerNames.add(this.whitelistedPlayers.getCompound(i).getString("name"));
+    return playerNames;
+  }
 }

@@ -3,6 +3,7 @@ package me.maxish0t.metalbarrels.client.screens.button;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.maxish0t.metalbarrels.util.ModReference;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
@@ -42,7 +43,11 @@ public class BarrelUnlockButton extends Button {
         this.renderBg(poseStack, minecraft, p_93747_, p_93748_);
 
         int j = getFGColor();
-        drawCenteredString(poseStack, font, this.getMessage(), this.x + (this.width + 4) / 2, this.y + (this.height + 15) / 2, j | Mth.ceil(this.alpha * 255.0F) << 24);
+
+        if (this.isHoveredOrFocused())
+            drawCenteredString(poseStack, font, ChatFormatting.GRAY + this.getMessage().getString(), this.x + (this.width + 4) / 2, this.y + (this.height + 15) / 2, j | Mth.ceil(this.alpha * 255.0F) << 24);
+        else
+            drawCenteredString(poseStack, font, this.getMessage(), this.x + (this.width + 4) / 2, this.y + (this.height + 15) / 2, j | Mth.ceil(this.alpha * 255.0F) << 24);
     }
 
 }
