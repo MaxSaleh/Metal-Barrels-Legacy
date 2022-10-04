@@ -47,20 +47,20 @@
   "tooltip.metalbarrels.ironchest": "也可升级《更多箱子》里的箱子！",
 
   "metalbarrels.upgrade_successful": "升级成功",
-  "metalbarrels.in_use": "储物桶被使用中",
+  "metalbarrels.in_use": "储物桶正在被另一个玩家使用",
 
-  "item.metalbarrels.barrel_move": "移动桶",
+  "item.metalbarrels.barrel_move": "搬桶器",
 
-  "metalbarrels.player_message.successful": "成功存放桶。",
-  "metalbarrels.player_message.sorry": "抱歉，里面已经有一个桶了！",
-  "metalbarrels.player_message.sorry_metal": "抱歉，此商品仅适用于金属桶！",
-  "metalbarrels.player_message.placed": "把枪管放在这个位置！",
-  "metalbarrels.player_message.tooltip_no_barrel": "持无桶",
-  "metalbarrels.player_message.tooltip_with_barrel": "拿着一个 ",
+  "metalbarrels.player_message.successful": "成功收起储物桶。",
+  "metalbarrels.player_message.sorry": "已经存有一个储物桶了！",
+  "metalbarrels.player_message.sorry_metal": "此物品只适用于金属储物桶！",
+  "metalbarrels.player_message.placed": "成功放置储物桶！",
+  "metalbarrels.player_message.tooltip_no_barrel": "未存有储物桶",
+  "metalbarrels.player_message.tooltip_with_barrel": "存有：",
 
-  "metalbarrels.player_overlay": "桶主： ",
+  "metalbarrels.player_overlay": "所有者： ",
   "metalbarrels.player_message.not_owner": "对不起，你不是这个桶的主人！",
-  "metalbarrels.screen.lock": "锁",
-  "metalbarrels.screen.unlock": "开锁",
-  "metalbarrels.block.cannot.open": "对不起，你不能打开这个桶。楼主锁了！"
+  "metalbarrels.screen.lock": "上锁",
+  "metalbarrels.screen.unlock": "解锁",
+  "metalbarrels.block.cannot.open": "你不能打开它，桶的主人上了锁！"
 }
