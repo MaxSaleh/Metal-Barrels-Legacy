@@ -19,13 +19,13 @@ public class ModBlocks {
     private static final BlockBehaviour.Properties metal = BlockBehaviour.Properties
             .of(Material.METAL)
             .strength(2.5F, 6.0F)
-            .requiresCorrectToolForDrops()
+            //.requiresCorrectToolForDrops()
             .sound(SoundType.METAL);
 
     private static final BlockBehaviour.Properties obsidian = BlockBehaviour.Properties
             .of(Material.STONE)
             .strength(15.0F, 6000.0F)
-            .requiresCorrectToolForDrops()
+            //.requiresCorrectToolForDrops()
             .sound(SoundType.NETHER_ORE);
 
     /**
