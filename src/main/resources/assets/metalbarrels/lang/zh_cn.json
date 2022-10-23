@@ -62,5 +62,6 @@
   "metalbarrels.player_message.not_owner": "对不起，你不是这个桶的主人！",
   "metalbarrels.screen.lock": "锁",
   "metalbarrels.screen.unlock": "开锁",
-  "metalbarrels.block.cannot.open": "对不起，你不能打开这个桶。楼主锁了！"
+  "metalbarrels.block.cannot.open": "对不起，你不能打开这个桶。楼主锁了！",
+  "metalbarrels.upgrade_not_successful": "抱歉，您无法升级此枪管。你不是主人！"
 }

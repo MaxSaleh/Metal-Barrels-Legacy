@@ -1,6 +1,5 @@
 package me.maxish0t.metalbarrels.client.handlers;
 
-import me.maxish0t.metalbarrels.MetalBarrels;
 import me.maxish0t.metalbarrels.client.render.CrystalBarrelRender;
 import me.maxish0t.metalbarrels.client.screens.MetalBarrelScreen;
 import me.maxish0t.metalbarrels.client.screens.overlay.PlayerOverlay;
@@ -13,7 +12,6 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
