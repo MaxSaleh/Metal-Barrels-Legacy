@@ -155,7 +155,6 @@ public class MetalBarrelBlockEntity extends BlockEntity implements MenuProvider,
     return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
   }
 
-
   @Override
   public @NotNull CompoundTag getUpdateTag() {
     CompoundTag compoundTag = super.getUpdateTag();

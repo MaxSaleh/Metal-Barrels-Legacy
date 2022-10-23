@@ -58,5 +58,6 @@
   "metalbarrels.player_message.not_owner": "Przepraszamy, że nie jesteś właścicielem tej beczki!",
   "metalbarrels.screen.lock": "Zamek",
   "metalbarrels.screen.unlock": "Odblokować",
-  "metalbarrels.block.cannot.open": "Przepraszamy, że nie możesz otworzyć tej beczki. Właściciel go zablokował!"
+  "metalbarrels.block.cannot.open": "Przepraszamy, że nie możesz otworzyć tej beczki. Właściciel go zablokował!",
+  "metalbarrels.upgrade_not_successful": "Przepraszamy, że nie możesz ulepszyć tej beczki. Nie jesteś właścicielem!"
 }
